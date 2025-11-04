@@ -179,13 +179,13 @@ deactivate
 ### From GitHub
 
 ```bash
-pip install git+https://github.com/engdahl/rhlunch.git
+pip install git+https://github.com/hamiltoon/rhlunch.git
 ```
 
 ### From source
 
 ```bash
-git clone https://github.com/engdahl/rhlunch.git
+git clone https://github.com/hamiltoon/rhlunch.git
 cd rhlunch
 pip install -e .
 ```
