@@ -39,13 +39,15 @@ RESTAURANTS = {
               help='Specific restaurant to show. By default shows all restaurants.')
 @click.option('--vegetarian-only', '-v', is_flag=True,
               help='Show only vegetarian options.')
+@click.option('--fish-only', '-f', is_flag=True,
+              help='Show only fish options.')
 @click.option('--meat-only', '-m', is_flag=True,
               help='Show only meat options.')
 @click.option('--week', '-w', is_flag=True,
               help='Show the whole week menu.')
 @click.option('--debug', '-d', is_flag=True,
               help='Enable debug logging to show which date is being fetched.')
-def main(restaurant_key, vegetarian_only, meat_only, week, debug):
+def main(restaurant_key, vegetarian_only, fish_only, meat_only, week, debug):
     """
     Get lunch menu from multiple restaurants.
 
@@ -53,6 +55,7 @@ def main(restaurant_key, vegetarian_only, meat_only, week, debug):
         lunch                    # Get today's menu from all restaurants
         lunch -r gourmedia      # Show only Gourmedia
         lunch -v                # Show only vegetarian options
+        lunch -f                # Show only fish options
         lunch -m                # Show only meat options
         lunch -w                # Show whole week menu
         lunch -d                # Enable debug logging
@@ -104,12 +107,12 @@ def main(restaurant_key, vegetarian_only, meat_only, week, debug):
         raise click.Abort()
 
     if week:
-        display_all_weekly_menus(all_menus, vegetarian_only, meat_only)
+        display_all_weekly_menus(all_menus, vegetarian_only, fish_only, meat_only)
     else:
-        display_all_daily_menus(all_menus, vegetarian_only, meat_only)
+        display_all_daily_menus(all_menus, vegetarian_only, fish_only, meat_only)
 
 
-def display_all_daily_menus(all_menus, vegetarian_only, meat_only):
+def display_all_daily_menus(all_menus, vegetarian_only, fish_only, meat_only):
     """Display daily menus from multiple restaurants."""
     today = date.today()
     day_names = {
@@ -137,7 +140,7 @@ def display_all_daily_menus(all_menus, vegetarian_only, meat_only):
         has_items = False
 
         # Show vegetarian options
-        if not meat_only and menu.get('vegetarian'):
+        if not meat_only and not fish_only and menu.get('vegetarian'):
             has_items = True
             click.echo()
             click.echo(click.style("🥬  Vegetarian".center(80), fg='green', bold=True))
@@ -146,7 +149,7 @@ def display_all_daily_menus(all_menus, vegetarian_only, meat_only):
                 click.echo(f"      {item}")
 
         # Show fish options
-        if not vegetarian_only and menu.get('fish'):
+        if not vegetarian_only and not meat_only and menu.get('fish'):
             has_items = True
             click.echo()
             click.echo(click.style("🐟  Fish".center(80), fg='blue', bold=True))
@@ -155,7 +158,7 @@ def display_all_daily_menus(all_menus, vegetarian_only, meat_only):
                 click.echo(f"      {item}")
 
         # Show meat options
-        if not vegetarian_only and menu.get('meat'):
+        if not vegetarian_only and not fish_only and menu.get('meat'):
             has_items = True
             click.echo()
             click.echo(click.style("🥩  Meat".center(80), fg='red', bold=True))
@@ -174,7 +177,7 @@ def display_all_daily_menus(all_menus, vegetarian_only, meat_only):
     click.echo()
 
 
-def display_all_weekly_menus(all_menus, vegetarian_only, meat_only):
+def display_all_weekly_menus(all_menus, vegetarian_only, fish_only, meat_only):
     """Display weekly menus from multiple restaurants."""
     # Header
     click.echo()
@@ -212,7 +215,7 @@ def display_all_weekly_menus(all_menus, vegetarian_only, meat_only):
                 has_items = False
 
                 # Show vegetarian options
-                if not meat_only and menu.get('vegetarian'):
+                if not meat_only and not fish_only and menu.get('vegetarian'):
                     has_items = True
                     click.echo()
                     click.echo(click.style("🥬  Vegetarian".center(80), fg='green', bold=True))
@@ -221,7 +224,7 @@ def display_all_weekly_menus(all_menus, vegetarian_only, meat_only):
                         click.echo(f"          {item}")
 
                 # Show fish options
-                if not vegetarian_only and menu.get('fish'):
+                if not vegetarian_only and not meat_only and menu.get('fish'):
                     has_items = True
                     click.echo()
                     click.echo(click.style("🐟  Fish".center(80), fg='blue', bold=True))
@@ -230,7 +233,7 @@ def display_all_weekly_menus(all_menus, vegetarian_only, meat_only):
                         click.echo(f"          {item}")
 
                 # Show meat options
-                if not vegetarian_only and menu.get('meat'):
+                if not vegetarian_only and not fish_only and menu.get('meat'):
                     has_items = True
                     click.echo()
                     click.echo(click.style("🥩  Meat".center(80), fg='red', bold=True))
