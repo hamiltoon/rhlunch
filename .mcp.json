@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "rhlunch": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+https://github.com/hamiltoon/rhlunch.git",
+        "rhlunch-mcp"
+      ]
+    }
+  }
+}

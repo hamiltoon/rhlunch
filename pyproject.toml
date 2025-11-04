@@ -31,6 +31,7 @@ dependencies = [
     "beautifulsoup4>=4.12.0",
     "click>=8.1.0",
     "python-dateutil>=2.8.0",
+    "mcp[cli]>=1.0.0",
 ]
 
 [project.urls]
@@ -40,6 +41,7 @@ Issues = "https://github.com/engdahl/rhlunch/issues"
 
 [project.scripts]
 lunch = "lunchscraper.cli:main"
+rhlunch-mcp = "lunchscraper.mcp_server:main"
 
 [tool.setuptools.packages.find]
 where = ["."]

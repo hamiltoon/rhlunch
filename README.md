@@ -5,11 +5,13 @@ A simple command-line tool to get lunch menus from multiple Stockholm restaurant
 ## 🥱 Easiest way to run
 
 Install Homebrew (you probably already have this). Run:
+
 ```bash
 brew install uv
 ```
 
 Then just run:
+
 ```bash
 uvx --from git+https://github.com/engdahl/rhlunch lunch
 ```
@@ -262,6 +264,95 @@ lunch -f -r karavan      # Show only fish from Karavan
 
           Raggmunk med stekt fläsk och lingon
 ```
+
+## 🤖 MCP Server (AI Assistant Integration)
+
+RHLunch includes an MCP (Model Context Protocol) server that allows AI assistants like Claude to directly query lunch menus.
+
+### What is MCP?
+
+MCP is an open standard that enables AI assistants to securely connect to external data sources and tools. By running RHLunch as an MCP server, you can ask your AI assistant questions like "What's for lunch today?" and get live menu data.
+
+### Setup with Claude Code
+
+Claude Code will automatically detect the `.mcp.json` file in this repository and load the RHLunch MCP server. No manual configuration needed!
+
+The [.mcp.json](.mcp.json) file configures the server to run via `uvx`, which automatically handles installation:
+
+```json
+{
+  "mcpServers": {
+    "rhlunch": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+https://github.com/engdahl/rhlunch.git",
+        "rhlunch-mcp"
+      ]
+    }
+  }
+}
+```
+
+### Setup with Claude Desktop
+
+Add the following configuration to your Claude Desktop settings file:
+
+**macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
+
+**Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
+
+```json
+{
+  "mcpServers": {
+    "rhlunch": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+https://github.com/engdahl/rhlunch.git",
+        "rhlunch-mcp"
+      ]
+    }
+  }
+}
+```
+
+**Requirements:**
+
+- Install `uv` first: `brew install uv` (macOS) or see [uv installation docs](https://github.com/astral-sh/uv)
+
+Then **restart Claude Desktop** to load the MCP server.
+
+### Development & Testing
+
+Test the MCP server locally using the MCP Inspector:
+
+```bash
+# Install dependencies
+pip install -e .
+
+# Run MCP inspector
+npx @modelcontextprotocol/inspector uvx --from git+https://github.com/engdahl/rhlunch.git rhlunch-mcp
+```
+
+### Available MCP Tools
+
+Once configured, Claude can use these tools:
+
+- **`list_restaurants()`** - Get a list of all available restaurants
+- **`get_daily_menu()`** - Get today's lunch menu
+  - Optional parameters: `restaurant`, `vegetarian_only`, `fish_only`, `meat_only`, `target_date`
+- **`get_weekly_menu()`** - Get the weekly lunch menu
+  - Optional parameters: `restaurant`, `vegetarian_only`, `fish_only`, `meat_only`
+
+### Example Prompts for Claude
+
+Once the MCP server is configured, you can ask Claude:
+
+- "What's for lunch today?"
+- "Show me the vegetarian options at Filmhuset"
+- "What's the weekly menu at Karavan?"
+- "Are there any fish dishes available today?"
 
 ## License
 
