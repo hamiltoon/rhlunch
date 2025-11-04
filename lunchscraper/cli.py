@@ -123,42 +123,63 @@ def display_all_daily_menus(all_menus, vegetarian_only, meat_only):
     }
     day_name = day_names[today.weekday()]
 
-    click.echo(f"\n🍽️  Lunch Menu for {day_name}, {today.strftime('%B %d, %Y')}")
-    click.echo("=" * 70)
+    # Header
+    click.echo()
+    click.echo(click.style("  🍽️  LUNCH MENU", fg='bright_white', bold=True) +
+               click.style(f"  •  {day_name}, {today.strftime('%B %d, %Y')}", fg='white', dim=True))
+    click.echo()
 
-    for restaurant_name, menu in all_menus.items():
-        click.echo(f"\n📍 {restaurant_name}")
-        click.echo("-" * 40)
+    for i, (restaurant_name, menu) in enumerate(all_menus.items()):
+        # Restaurant header with emoji and bold name
+        click.echo(click.style(f"  📍  {restaurant_name.upper()}", fg='bright_cyan', bold=True))
+        click.echo(click.style("      " + "─" * 74, fg='cyan', dim=True))
+
+        has_items = False
 
         # Show vegetarian options
         if not meat_only and menu.get('vegetarian'):
-            click.echo("🥬 Vegetarian:")
+            has_items = True
+            click.echo()
+            click.echo(click.style("🥬  Vegetarian".center(80), fg='green', bold=True))
+            click.echo()
             for item in menu['vegetarian']:
-                click.echo(f"  • {item}")
+                click.echo(f"      {item}")
 
         # Show fish options
         if not vegetarian_only and menu.get('fish'):
-            click.echo("🐟 Fish:")
+            has_items = True
+            click.echo()
+            click.echo(click.style("🐟  Fish".center(80), fg='blue', bold=True))
+            click.echo()
             for item in menu['fish']:
-                click.echo(f"  • {item}")
+                click.echo(f"      {item}")
 
         # Show meat options
         if not vegetarian_only and menu.get('meat'):
-            click.echo("🥩 Meat:")
+            has_items = True
+            click.echo()
+            click.echo(click.style("🥩  Meat".center(80), fg='red', bold=True))
+            click.echo()
             for item in menu['meat']:
-                click.echo(f"  • {item}")
+                click.echo(f"      {item}")
 
         # Handle case where no menu items found
-        if not menu.get('vegetarian') and not menu.get('fish') and not menu.get('meat'):
-            click.echo("  ❌ No menu items found for today")
+        if not has_items:
+            click.echo(click.style("      ❌ No menu items found for today", fg='yellow'))
+
+        # Add spacing between restaurants (except for the last one)
+        if i < len(all_menus) - 1:
+            click.echo()
 
     click.echo()
 
 
 def display_all_weekly_menus(all_menus, vegetarian_only, meat_only):
     """Display weekly menus from multiple restaurants."""
-    click.echo(f"\n🍽️  Weekly Lunch Menu")
-    click.echo("=" * 70)
+    # Header
+    click.echo()
+    click.echo(click.style("  🍽️  WEEKLY LUNCH MENU", fg='bright_white', bold=True))
+    click.echo()
 
     day_names = {
         'måndag': 'Monday',
@@ -170,9 +191,10 @@ def display_all_weekly_menus(all_menus, vegetarian_only, meat_only):
         'söndag': 'Sunday'
     }
 
-    for restaurant_name, weekly_menu in all_menus.items():
-        click.echo(f"\n📍 {restaurant_name}")
-        click.echo("=" * 50)
+    for rest_idx, (restaurant_name, weekly_menu) in enumerate(all_menus.items()):
+        # Restaurant header
+        click.echo(click.style(f"  📍  {restaurant_name.upper()}", fg='bright_cyan', bold=True))
+        click.echo(click.style("      " + "─" * 74, fg='cyan', dim=True))
 
         for day_key, day_name in day_names.items():
             if day_key in weekly_menu:
@@ -183,30 +205,46 @@ def display_all_weekly_menus(all_menus, vegetarian_only, meat_only):
                     if day_key in ['lördag', 'söndag']:
                         continue  # Skip empty weekends
 
-                click.echo(f"\n📅 {day_name}")
-                click.echo("-" * 30)
+                # Day header
+                click.echo()
+                click.echo(click.style(f"      📅  {day_name}", fg='bright_yellow', bold=True))
+
+                has_items = False
 
                 # Show vegetarian options
                 if not meat_only and menu.get('vegetarian'):
-                    click.echo("🥬 Vegetarian:")
+                    has_items = True
+                    click.echo()
+                    click.echo(click.style("🥬  Vegetarian".center(80), fg='green', bold=True))
+                    click.echo()
                     for item in menu['vegetarian']:
-                        click.echo(f"  • {item}")
+                        click.echo(f"          {item}")
 
                 # Show fish options
                 if not vegetarian_only and menu.get('fish'):
-                    click.echo("🐟 Fish:")
+                    has_items = True
+                    click.echo()
+                    click.echo(click.style("🐟  Fish".center(80), fg='blue', bold=True))
+                    click.echo()
                     for item in menu['fish']:
-                        click.echo(f"  • {item}")
+                        click.echo(f"          {item}")
 
                 # Show meat options
                 if not vegetarian_only and menu.get('meat'):
-                    click.echo("🥩 Meat:")
+                    has_items = True
+                    click.echo()
+                    click.echo(click.style("🥩  Meat".center(80), fg='red', bold=True))
+                    click.echo()
                     for item in menu['meat']:
-                        click.echo(f"  • {item}")
+                        click.echo(f"          {item}")
 
                 # Show message if no items found
-                if not menu.get('vegetarian') and not menu.get('fish') and not menu.get('meat'):
-                    click.echo("  ❌ No menu available")
+                if not has_items:
+                    click.echo(click.style("          ❌ No menu available", fg='yellow'))
+
+        # Add spacing between restaurants (except for the last one)
+        if rest_idx < len(all_menus) - 1:
+            click.echo()
 
     click.echo()
 
