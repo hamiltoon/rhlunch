@@ -204,7 +204,7 @@ class ISSMenuScraper(BaseMenuScraper):
     def _parse_day_menu_from_text(self, menu_text: str) -> Dict[str, List[str]]:
         """Parse menu text for a single day."""
         if not menu_text:
-            return {'vegetarian': [], 'meat': []}
+            return {'vegetarian': [], 'fish': [], 'meat': []}
 
         # Split by newlines and tabs to get all parts
         dishes = []
@@ -226,8 +226,8 @@ class ISSMenuScraper(BaseMenuScraper):
         # Use classifier to categorize dishes
         categorized = DishClassifier.classify_dishes(dishes)
 
-        # Merge fish and meat for backward compatibility
-        return DishClassifier.merge_categories_for_display(categorized)
+        # Return all three categories
+        return categorized
     
     def get_menu_for_day(self, target_date: Optional[date] = None) -> Dict[str, List[str]]:
         """

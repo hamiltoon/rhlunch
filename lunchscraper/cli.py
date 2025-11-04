@@ -136,6 +136,12 @@ def display_all_daily_menus(all_menus, vegetarian_only, meat_only):
             for item in menu['vegetarian']:
                 click.echo(f"  • {item}")
 
+        # Show fish options
+        if not vegetarian_only and menu.get('fish'):
+            click.echo("🐟 Fish:")
+            for item in menu['fish']:
+                click.echo(f"  • {item}")
+
         # Show meat options
         if not vegetarian_only and menu.get('meat'):
             click.echo("🥩 Meat:")
@@ -143,7 +149,7 @@ def display_all_daily_menus(all_menus, vegetarian_only, meat_only):
                 click.echo(f"  • {item}")
 
         # Handle case where no menu items found
-        if not menu.get('vegetarian') and not menu.get('meat'):
+        if not menu.get('vegetarian') and not menu.get('fish') and not menu.get('meat'):
             click.echo("  ❌ No menu items found for today")
 
     click.echo()
@@ -173,7 +179,7 @@ def display_all_weekly_menus(all_menus, vegetarian_only, meat_only):
                 menu = weekly_menu[day_key]
 
                 # Skip if no menu items and it's a weekend
-                if not menu.get('vegetarian') and not menu.get('meat'):
+                if not menu.get('vegetarian') and not menu.get('fish') and not menu.get('meat'):
                     if day_key in ['lördag', 'söndag']:
                         continue  # Skip empty weekends
 
@@ -186,6 +192,12 @@ def display_all_weekly_menus(all_menus, vegetarian_only, meat_only):
                     for item in menu['vegetarian']:
                         click.echo(f"  • {item}")
 
+                # Show fish options
+                if not vegetarian_only and menu.get('fish'):
+                    click.echo("🐟 Fish:")
+                    for item in menu['fish']:
+                        click.echo(f"  • {item}")
+
                 # Show meat options
                 if not vegetarian_only and menu.get('meat'):
                     click.echo("🥩 Meat:")
@@ -193,7 +205,7 @@ def display_all_weekly_menus(all_menus, vegetarian_only, meat_only):
                         click.echo(f"  • {item}")
 
                 # Show message if no items found
-                if not menu.get('vegetarian') and not menu.get('meat'):
+                if not menu.get('vegetarian') and not menu.get('fish') and not menu.get('meat'):
                     click.echo("  ❌ No menu available")
 
     click.echo()

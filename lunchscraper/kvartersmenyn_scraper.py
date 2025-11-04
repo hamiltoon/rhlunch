@@ -89,7 +89,7 @@ class KvartersmenynsMenuScraper(BaseMenuScraper):
     def _parse_dishes(self, dishes: List[str]) -> Dict[str, List[str]]:
         """Parse a list of dish strings."""
         if not dishes:
-            return {'vegetarian': [], 'meat': []}
+            return {'vegetarian': [], 'fish': [], 'meat': []}
 
         # Combine dishes that belong together
         combined_dishes = []
@@ -143,8 +143,8 @@ class KvartersmenynsMenuScraper(BaseMenuScraper):
         # Use classifier to categorize dishes
         categorized = DishClassifier.classify_dishes(cleaned_dishes)
 
-        # Merge fish and meat for backward compatibility
-        return DishClassifier.merge_categories_for_display(categorized)
+        # Return all three categories
+        return categorized
 
     def get_menu_for_day(self, target_date: Optional[date] = None) -> Dict[str, List[str]]:
         """

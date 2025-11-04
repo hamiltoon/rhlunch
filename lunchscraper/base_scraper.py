@@ -20,7 +20,7 @@ class BaseMenuScraper(ABC):
             target_date: The date to get menu for. If None, uses today.
 
         Returns:
-            Dictionary with 'vegetarian' and 'meat' menu items for the day.
+            Dictionary with 'vegetarian', 'fish', and 'meat' menu items for the day.
         """
         pass
 
@@ -31,6 +31,6 @@ class BaseMenuScraper(ABC):
 
         Returns:
             Dictionary with days as keys (Swedish day names in lowercase)
-            and menu items for each day.
+            and menu items for each day. Each day contains 'vegetarian', 'fish', and 'meat' lists.
         """
         pass

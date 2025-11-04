@@ -70,26 +70,32 @@ class DishClassifier:
         dish_lower = dish.lower().strip()
 
         # Check if this is a category marker itself
+        # Only match if it's EXACTLY the marker or marker with trailing colon
         for category, markers in cls.CATEGORY_MARKERS.items():
             for marker in markers:
-                if dish_lower == marker or dish_lower.startswith(marker):
+                # Exact match or marker followed by colon
+                if dish_lower == marker or dish_lower == marker + ':':
+                    return f'marker:{category}'
+                # Also match if marker with colon at start (e.g., "Fisk: dagens rätt")
+                if dish_lower.startswith(marker + ':'):
                     return f'marker:{category}'
 
         # If previous line was a category marker, use that
         if previous_category:
             return previous_category
 
-        # Check for fish keywords (most specific)
+        # Check for meat keywords first to avoid false positives
+        # (e.g., "fläsk" contains "fisk" as substring, but should be classified as meat)
+        if any(keyword in dish_lower for keyword in cls.MEAT_KEYWORDS):
+            return 'meat'
+
+        # Check for fish keywords
         if any(keyword in dish_lower for keyword in cls.FISH_KEYWORDS):
             return 'fish'
 
         # Check for vegetarian keywords
         if any(keyword in dish_lower for keyword in cls.VEGETARIAN_KEYWORDS):
             return 'vegetarian'
-
-        # Check for meat keywords
-        if any(keyword in dish_lower for keyword in cls.MEAT_KEYWORDS):
-            return 'meat'
 
         # Check for special meat dishes
         if any(dish_name in dish_lower for dish_name in cls.MEAT_DISHES):
