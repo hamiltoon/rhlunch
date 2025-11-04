@@ -273,6 +273,46 @@ RHLunch includes an MCP (Model Context Protocol) server that allows AI assistant
 
 MCP is an open standard that enables AI assistants to securely connect to external data sources and tools. By running RHLunch as an MCP server, you can ask your AI assistant questions like "What's for lunch today?" and get live menu data.
 
+### Setup with GitHub Copilot in VS Code
+
+**Requirements:**
+- VS Code 1.99 or later
+- GitHub Copilot & Copilot Chat extensions installed
+- Install `uv`: `brew install uv` (macOS) or see [uv installation docs](https://github.com/astral-sh/uv)
+
+**Option A - Workspace Configuration (Recommended)**
+
+Create a `.vscode/mcp.json` file in your workspace root:
+
+```json
+{
+  "servers": {
+    "rhlunch": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+https://github.com/engdahl/rhlunch.git",
+        "rhlunch-mcp"
+      ]
+    }
+  }
+}
+```
+
+**Option B - Using VS Code UI**
+
+1. Open Copilot Chat (click the chat icon in the title bar)
+2. Click the tools 🔧 icon at the bottom of the chat view
+3. Scroll down and click **"Add More Tools..."**
+4. Add the MCP server configuration
+
+**Restart VS Code** to load the MCP server.
+
+Once configured, you can ask Copilot in chat mode:
+- "What's for lunch today at the restaurants?"
+- "Show me vegetarian options"
+
 ### Setup with Claude Code
 
 Claude Code will automatically detect the `.mcp.json` file in this repository and load the RHLunch MCP server. No manual configuration needed!
