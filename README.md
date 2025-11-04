@@ -299,6 +299,7 @@ MCP is an open standard that enables AI assistants to securely connect to extern
 ### Setup with GitHub Copilot in VS Code
 
 **Requirements:**
+
 - VS Code 1.99 or later
 - GitHub Copilot & Copilot Chat extensions installed
 - Install `uv`: `brew install uv` (macOS) or see [uv installation docs](https://github.com/astral-sh/uv)
@@ -315,7 +316,7 @@ Create a `.vscode/mcp.json` file in your workspace root:
       "command": "uvx",
       "args": [
         "--from",
-        "git+https://github.com/engdahl/rhlunch.git",
+        "git+https://github.com/hamiltoon/rhlunch.git",
         "rhlunch-mcp"
       ]
     }
@@ -333,6 +334,7 @@ Create a `.vscode/mcp.json` file in your workspace root:
 **Restart VS Code** to load the MCP server.
 
 Once configured, you can ask Copilot in chat mode:
+
 - "What's for lunch today at the restaurants?"
 - "Show me vegetarian options"
 
@@ -349,7 +351,7 @@ The [.mcp.json](.mcp.json) file configures the server to run via `uvx`, which au
       "command": "uvx",
       "args": [
         "--from",
-        "git+https://github.com/engdahl/rhlunch.git",
+        "git+https://github.com/hamiltoon/rhlunch.git",
         "rhlunch-mcp"
       ]
     }
@@ -372,7 +374,7 @@ Add the following configuration to your Claude Desktop settings file:
       "command": "uvx",
       "args": [
         "--from",
-        "git+https://github.com/engdahl/rhlunch.git",
+        "git+https://github.com/hamiltoon/rhlunch.git",
         "rhlunch-mcp"
       ]
     }
@@ -395,7 +397,7 @@ Test the MCP server locally using the MCP Inspector:
 pip install -e .
 
 # Run MCP inspector
-npx @modelcontextprotocol/inspector uvx --from git+https://github.com/engdahl/rhlunch.git rhlunch-mcp
+npx @modelcontextprotocol/inspector uvx --from git+https://github.com/hamiltoon/rhlunch.git rhlunch-mcp
 ```
 
 ### Available MCP Tools
