@@ -1,6 +1,6 @@
 # RHLunch
 
-A simple command-line tool to get lunch menus from Gourmedia.
+A simple command-line tool to get lunch menus from multiple Stockholm restaurants (Gourmedia, Filmhuset, Karavan).
 
 ## 🥱 Easiest way to run
 
@@ -193,6 +193,14 @@ Show only meat options:
 lunch -m
 ```
 
+Show only a specific restaurant:
+
+```bash
+lunch -r gourmedia
+lunch -r filmhuset
+lunch -r karavan
+```
+
 Show the whole week menu:
 
 ```bash
@@ -205,18 +213,38 @@ Enable debug logging to troubleshoot issues:
 lunch -d
 ```
 
+Combine options:
+
+```bash
+lunch -r filmhuset -v    # Show only Filmhuset vegetarian options
+lunch -w -m              # Show weekly menu, meat only
+```
+
 ## Example Output
 
 ```
-🍽️  Lunch Menu for Today
-==================================================
+🍽️  Lunch Menu for Tuesday, November 04, 2025
+======================================================================
 
-🥬 Vegetarian Options:
-  • Vegetariskt Moussaka på vegofärs,aubergine,potatis,serveras med tzatziki
+📍 Gourmedia
+----------------------------------------
+🥬 Vegetarian:
+  • Böff ala Lindström med skysås, Pepparotscreme, stekt potatis
+🥩 Meat:
+  • Stekt rimmad fläsk med löksås/Cowboy bönor samt kokt potatis
 
-🥩 Meat Options:
-  • Ärtsoppa Ärtsoppa/Vegan Fläskbog,timjan,mejram,senap
-  • Pannkaka Yessufs goda pannkisar med drottningsylt och vispad grädde
+📍 Filmhuset
+----------------------------------------
+🥩 Meat:
+  • Coq au vin på kycklinglårfilé L med rött vin, champinjoner, rökt sidfläsk och potatispuré
+  • Asiatisk fiskgryta med scampi, ingefära, lime, koriander, chili och jasminris
+
+📍 Karavan
+----------------------------------------
+🥬 Vegetarian:
+  • Långbakad rotselleri serveras med sojamajo och rostad potatis toppad med friterad puriolök
+🥩 Meat:
+  • Raggmunk med stekt fläsk och lingon
 ```
 
 ## License

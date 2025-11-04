@@ -4,19 +4,22 @@ import requests
 from bs4 import BeautifulSoup
 from datetime import datetime, date
 from typing import Dict, List, Optional
-import re
 import logging
 import base64
 import json
+from .base_scraper import BaseMenuScraper
+from .dish_classifier import DishClassifier
 
 logger = logging.getLogger(__name__)
 
 
-class ISSMenuScraper:
+class ISSMenuScraper(BaseMenuScraper):
     """Scraper for ISS restaurant lunch menus."""
     
-    def __init__(self, restaurant_url: str):
+    def __init__(self, restaurant_url: str, restaurant_id: str = "Restaurang Gourmedia", restaurant_name: str = "Gourmedia"):
+        super().__init__(restaurant_name)
         self.restaurant_url = restaurant_url
+        self.restaurant_id = restaurant_id
         self.session = requests.Session()
         self.session.headers.update({
             'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
@@ -83,13 +86,13 @@ class ISSMenuScraper:
         """Get ISO week number for a given date."""
         return target_date.isocalendar()[1]
     
-    def _build_api_query(self, week_number: int, restaurant_id: str = "Restaurang Gourmedia") -> str:
+    def _build_api_query(self, week_number: int) -> str:
         """Build the API query parameter."""
         query_data = {
             "dataCollectionId": "Meny",
             "query": {
                 "filter": {
-                    "restrauntId": restaurant_id,  # Note: misspelled in API
+                    "restrauntId": self.restaurant_id,  # Note: misspelled in API
                     "weekNumber": week_number
                 },
                 "paging": {
@@ -200,44 +203,31 @@ class ISSMenuScraper:
     
     def _parse_day_menu_from_text(self, menu_text: str) -> Dict[str, List[str]]:
         """Parse menu text for a single day."""
-        menu_items = {'vegetarian': [], 'meat': []}
-        
         if not menu_text:
-            return menu_items
-        
-        # Split by newlines
+            return {'vegetarian': [], 'meat': []}
+
+        # Split by newlines and tabs to get all parts
+        dishes = []
         lines = menu_text.split('\n')
-        
+
         for line in lines:
             line = line.strip()
             if not line:
                 continue
-            
+
             # Split by tabs
             parts = line.split('\t')
-            
+
             for part in parts:
                 part = part.strip()
-                if not part:
-                    continue
-                
-                # Check for category keywords
-                part_lower = part.lower()
-                
-                # Skip category headers
-                if part_lower in ['vegetariskt', 'kött', 'fisk', 'extra', 'ärtsoppa', 'pannkaka']:
-                    continue
-                
-                # Classify based on keywords
-                if any(keyword in part_lower for keyword in ['vegetariskt', 'vegan', 'vego']):
-                    menu_items['vegetarian'].append(part)
-                elif any(keyword in part_lower for keyword in ['kött', 'kyckling', 'fläsk', 'ägg', 'fisk', 'älg', 'ärtsoppa', 'pannkaka', 'burger', 'pulled pork', 'korvstroganoff']):
-                    menu_items['meat'].append(part)
-                else:
-                    # If unclear, add to vegetarian by default
-                    menu_items['vegetarian'].append(part)
-        
-        return menu_items
+                if part:
+                    dishes.append(part)
+
+        # Use classifier to categorize dishes
+        categorized = DishClassifier.classify_dishes(dishes)
+
+        # Merge fish and meat for backward compatibility
+        return DishClassifier.merge_categories_for_display(categorized)
     
     def get_menu_for_day(self, target_date: Optional[date] = None) -> Dict[str, List[str]]:
         """

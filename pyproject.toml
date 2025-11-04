@@ -39,8 +39,8 @@ Repository = "https://github.com/engdahl/rhlunch"
 Issues = "https://github.com/engdahl/rhlunch/issues"
 
 [project.scripts]
-lunch = "gourmediascraper.cli:main"
+lunch = "lunchscraper.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["gourmediascraper*"]
+include = ["lunchscraper*"]
