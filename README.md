@@ -11,20 +11,43 @@ brew install uv
 
 Then just run:
 ```bash
-uvx --from git+https://github.com/engdahl/rhlunch lunch
+uvx --from git+https://github.com/hamiltoon/rhlunch lunch
 ```
 
 Voila, lunch is served!
 
 ```
-🍽️  Lunch Menu for Friday, October 31, 2025
-==================================================
+  🍽️  LUNCH MENU  •  Tuesday, November 04, 2025
 
-🥬 Vegetarian Options:
-  • Sheperds pie vegan,svamp,sojafärs,pumpa samt persiljeyoghurt
+  📍  FILMHUSET
+      ──────────────────────────────────────────────────────────────────────────
 
-🥩 Meat Options:
-  • Tonkatsukyckling med chilibearnaise,kålsallad samt stekt sesampotatis
+                                  🥬  Vegetarian
+
+          Indisk vegetarisk curry med aubergine, bönor och spenat serveras med jasminris
+
+                                     🐟  Fish
+
+          Asiatisk fiskgryta med scampi, ingefära, lime, koriander, chili och jasminris
+
+                                     🥩  Meat
+
+          Coq au vin på kycklinglårfilé med rött vin, champinjoner och potatispuré
+
+  📍  KARAVAN
+      ──────────────────────────────────────────────────────────────────────────
+
+                                  🥬  Vegetarian
+
+          Långbakad rotselleri serveras med sojamajo och rostad potatis
+
+                                     🐟  Fish
+
+          Fisk ala bombay serveras basmatiris
+
+                                     🥩  Meat
+
+          Raggmunk med stekt fläsk och lingon
 ```
 
 ---
