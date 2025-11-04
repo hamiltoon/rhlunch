@@ -193,6 +193,12 @@ Show only meat options:
 lunch -m
 ```
 
+Show only fish options:
+
+```bash
+lunch -f
+```
+
 Show only a specific restaurant:
 
 ```bash
@@ -218,33 +224,43 @@ Combine options:
 ```bash
 lunch -r filmhuset -v    # Show only Filmhuset vegetarian options
 lunch -w -m              # Show weekly menu, meat only
+lunch -f -r karavan      # Show only fish from Karavan
 ```
 
 ## Example Output
 
 ```
-🍽️  Lunch Menu for Tuesday, November 04, 2025
-======================================================================
+  🍽️  LUNCH MENU  •  Tuesday, November 04, 2025
 
-📍 Gourmedia
-----------------------------------------
-🥬 Vegetarian:
-  • Böff ala Lindström med skysås, Pepparotscreme, stekt potatis
-🥩 Meat:
-  • Stekt rimmad fläsk med löksås/Cowboy bönor samt kokt potatis
+  📍  FILMHUSET
+      ──────────────────────────────────────────────────────────────────────────
 
-📍 Filmhuset
-----------------------------------------
-🥩 Meat:
-  • Coq au vin på kycklinglårfilé L med rött vin, champinjoner, rökt sidfläsk och potatispuré
-  • Asiatisk fiskgryta med scampi, ingefära, lime, koriander, chili och jasminris
+                                  🥬  Vegetarian
 
-📍 Karavan
-----------------------------------------
-🥬 Vegetarian:
-  • Långbakad rotselleri serveras med sojamajo och rostad potatis toppad med friterad puriolök
-🥩 Meat:
-  • Raggmunk med stekt fläsk och lingon
+          Indisk vegetarisk curry med aubergine, bönor och spenat serveras med jasminris
+
+                                     🐟  Fish
+
+          Asiatisk fiskgryta med scampi, ingefära, lime, koriander, chili och jasminris
+
+                                     🥩  Meat
+
+          Coq au vin på kycklinglårfilé med rött vin, champinjoner och potatispuré
+
+  📍  KARAVAN
+      ──────────────────────────────────────────────────────────────────────────
+
+                                  🥬  Vegetarian
+
+          Långbakad rotselleri serveras med sojamajo och rostad potatis
+
+                                     🐟  Fish
+
+          Fisk ala bombay serveras basmatiris
+
+                                     🥩  Meat
+
+          Raggmunk med stekt fläsk och lingon
 ```
 
 ## License
