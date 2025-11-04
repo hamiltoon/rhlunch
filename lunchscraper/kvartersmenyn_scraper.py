@@ -49,40 +49,55 @@ class KvartersmenynsMenuScraper(BaseMenuScraper):
         for i_tag in menu_div.find_all('i'):
             i_tag.decompose()
 
-        # Get the HTML content and split by <b> or <strong> tags (day headers)
-        day_names = ['måndag', 'tisdag', 'onsdag', 'torsdag', 'fredag', 'lördag', 'söndag']
+        # Get all text content from the div, using get_text with separator
+        full_text = menu_div.get_text(separator='\n')
 
-        # Find all <b> and <strong> tags which contain day names
+        # Split into lines and process
+        day_names = ['Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag', 'Söndag']
+
         current_day = None
         current_dishes = []
 
-        for element in menu_div.children:
-            if element.name in ['b', 'strong']:
+        for line in full_text.split('\n'):
+            line = line.strip()
+
+            # Skip empty lines
+            if not line:
+                continue
+
+            # Check if this is a day header
+            if line in day_names:
                 # Save previous day if we have one
                 if current_day and current_dishes:
                     menu_items = self._parse_dishes(current_dishes)
-                    if menu_items['vegetarian'] or menu_items['meat']:
-                        weekly_menu[current_day] = menu_items
-                        logger.debug(f"Parsed {current_day}: {len(menu_items['vegetarian'])} veg, {len(menu_items['meat'])} meat")
+                    if menu_items['vegetarian'] or menu_items['fish'] or menu_items['meat']:
+                        weekly_menu[current_day.lower()] = menu_items
+                        logger.debug(f"Parsed {current_day}: {len(menu_items['vegetarian'])} veg, {len(menu_items['fish'])} fish, {len(menu_items['meat'])} meat")
 
                 # Start new day
-                day_text = element.get_text().strip().lower()
-                if day_text in day_names:
-                    current_day = day_text
-                    current_dishes = []
-            elif element.name == 'br':
-                continue
-            elif isinstance(element, str):
-                text = element.strip()
-                if text and current_day:
-                    current_dishes.append(text)
+                current_day = line
+                current_dishes = []
+
+            # Check if we've hit a non-day header (like "Veckans salladsbowl" or "Klimato")
+            elif current_day and (line.startswith('Veckans') or line in ['Klimato', 'VEGO HELA VECKAN', 'Sugen på vegetariskt?']):
+                # Save current day and stop parsing
+                if current_dishes:
+                    menu_items = self._parse_dishes(current_dishes)
+                    if menu_items['vegetarian'] or menu_items['fish'] or menu_items['meat']:
+                        weekly_menu[current_day.lower()] = menu_items
+                        logger.debug(f"Parsed {current_day}: {len(menu_items['vegetarian'])} veg, {len(menu_items['fish'])} fish, {len(menu_items['meat'])} meat")
+                break
+
+            # Add line to current day
+            elif current_day:
+                current_dishes.append(line)
 
         # Don't forget the last day
         if current_day and current_dishes:
             menu_items = self._parse_dishes(current_dishes)
-            if menu_items['vegetarian'] or menu_items['meat']:
-                weekly_menu[current_day] = menu_items
-                logger.debug(f"Parsed {current_day}: {len(menu_items['vegetarian'])} veg, {len(menu_items['meat'])} meat")
+            if menu_items['vegetarian'] or menu_items['fish'] or menu_items['meat']:
+                weekly_menu[current_day.lower()] = menu_items
+                logger.debug(f"Parsed {current_day}: {len(menu_items['vegetarian'])} veg, {len(menu_items['fish'])} fish, {len(menu_items['meat'])} meat")
 
         return weekly_menu
 

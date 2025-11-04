@@ -194,11 +194,22 @@ def get_weekly_menu(
             result.append(f"\n📍 {RESTAURANTS[key]['name']}")
             result.append("─" * 50)
 
-            day_names = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
-            for day_name, menu in zip(day_names, weekly_menu):
+            day_names = {
+                'måndag': 'Monday',
+                'tisdag': 'Tuesday',
+                'onsdag': 'Wednesday',
+                'torsdag': 'Thursday',
+                'fredag': 'Friday'
+            }
+
+            for swedish_day, english_day in day_names.items():
+                if swedish_day not in weekly_menu:
+                    continue
+
+                menu = weekly_menu[swedish_day]
                 filtered_menu = _filter_menu(menu, vegetarian_only, fish_only, meat_only)
 
-                result.append(f"\n📅 {day_name}")
+                result.append(f"\n📅 {english_day}")
 
                 if filtered_menu.get('vegetarian'):
                     result.append("\n🥬 Vegetarian:")
