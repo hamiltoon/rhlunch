@@ -7,6 +7,7 @@ from unittest.mock import patch, MagicMock
 import pytest
 import responses
 from lunchscraper.iss_scraper import ISSMenuScraper
+from tests.conftest import get_fixture_dates_with_file, load_fixture_file, load_json_fixture
 
 
 class TestISSMenuScraper:
@@ -325,3 +326,107 @@ class TestISSMenuScraper:
 
         with pytest.raises(Exception, match="Could not parse any menu data"):
             scraper.get_menu_for_day(test_date)
+
+
+# ============================================================================
+# Integration Tests with Real Fetched Fixtures
+# ============================================================================
+
+
+class TestISSMenuScraperWithRealFixtures:
+    """
+    Integration tests using real fetched HTML and API fixtures.
+
+    These tests automatically discover and run against all available fixture dates,
+    ensuring that the scraper works with actual production HTML and API responses.
+    """
+
+    @pytest.mark.parametrize(
+        "fixture_date",
+        get_fixture_dates_with_file("iss_api_response.json"),
+        ids=lambda d: f"api_{d.strftime('%Y_%m_%d')}"
+    )
+    def test_parse_real_api_response(self, fixture_date):
+        """
+        Test parsing real ISS API responses from fetched fixtures.
+
+        This test runs against all available fixture dates automatically.
+        When new fixtures are added, this test will automatically include them.
+        """
+        api_data = load_json_fixture("iss_api_response.json", fixture_date)
+        scraper = ISSMenuScraper(
+            restaurant_url="https://www.iss-menyer.se/restaurants/restaurang-gourmedia",
+            restaurant_id="Restaurang Gourmedia",
+            restaurant_name="Gourmedia"
+        )
+
+        result = scraper._parse_api_response(api_data)
+
+        # Basic validation that we got a menu
+        assert isinstance(result, dict), f"Failed to parse API response for {fixture_date}"
+        assert len(result) > 0, f"No menu items found for {fixture_date}"
+
+        # Check that we have expected weekdays
+        valid_days = {'måndag', 'tisdag', 'onsdag', 'torsdag', 'fredag', 'lördag', 'söndag'}
+        for day in result.keys():
+            assert day in valid_days, f"Unexpected day '{day}' in menu for {fixture_date}"
+
+        # Check that each day has the expected structure
+        for day, menu in result.items():
+            assert 'vegetarian' in menu, f"Missing 'vegetarian' category for {day} on {fixture_date}"
+            assert 'fish' in menu, f"Missing 'fish' category for {day} on {fixture_date}"
+            assert 'meat' in menu, f"Missing 'meat' category for {day} on {fixture_date}"
+
+            # Check that dishes are lists
+            assert isinstance(menu['vegetarian'], list), f"'vegetarian' should be a list for {day} on {fixture_date}"
+            assert isinstance(menu['fish'], list), f"'fish' should be a list for {day} on {fixture_date}"
+            assert isinstance(menu['meat'], list), f"'meat' should be a list for {day} on {fixture_date}"
+
+    @pytest.mark.parametrize(
+        "fixture_date",
+        get_fixture_dates_with_file("iss_gourmedia.html"),
+        ids=lambda d: f"html_{d.strftime('%Y_%m_%d')}"
+    )
+    def test_real_html_fixtures_exist_and_loadable(self, fixture_date):
+        """
+        Test that real Gourmedia HTML fixtures exist and can be loaded.
+
+        This validates that the fetched HTML files are accessible and
+        contain valid HTML that can be used for testing.
+        """
+        home_html = load_fixture_file("iss_home.html", fixture_date)
+        gourmedia_html = load_fixture_file("iss_gourmedia.html", fixture_date)
+
+        # Basic validation - files loaded successfully
+        assert home_html is not None, f"Failed to load home HTML for {fixture_date}"
+        assert gourmedia_html is not None, f"Failed to load gourmedia HTML for {fixture_date}"
+        assert len(home_html) > 0, f"Home HTML is empty for {fixture_date}"
+        assert len(gourmedia_html) > 0, f"Gourmedia HTML is empty for {fixture_date}"
+
+        # Check for expected HTML markers
+        assert '<!DOCTYPE html>' in home_html or '<html' in home_html, f"Home HTML doesn't appear to be valid HTML for {fixture_date}"
+        assert '<!DOCTYPE html>' in gourmedia_html or '<html' in gourmedia_html, f"Gourmedia HTML doesn't appear to be valid HTML for {fixture_date}"
+
+    def test_latest_fixtures_parse_successfully(self, iss_home_html, iss_gourmedia_html, iss_api_response):
+        """
+        Test that the latest fixtures (from conftest.py) parse successfully.
+
+        This test uses the fixtures provided by conftest.py pytest fixtures,
+        ensuring backward compatibility with existing test infrastructure.
+        """
+        scraper = ISSMenuScraper(
+            restaurant_url="https://www.iss-menyer.se/restaurants/restaurang-gourmedia",
+            restaurant_id="Restaurang Gourmedia",
+            restaurant_name="Gourmedia"
+        )
+
+        # Test that HTML fixtures are valid
+        assert iss_home_html is not None
+        assert iss_gourmedia_html is not None
+        assert len(iss_home_html) > 0
+        assert len(iss_gourmedia_html) > 0
+
+        # Test API response parsing
+        result = scraper._parse_api_response(iss_api_response)
+        assert isinstance(result, dict)
+        assert len(result) > 0

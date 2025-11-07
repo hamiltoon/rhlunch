@@ -1,7 +1,7 @@
 # RHLunch
 
 [![Tests](https://github.com/hamiltoon/rhlunch/workflows/Tests/badge.svg)](https://github.com/hamiltoon/rhlunch/actions/workflows/tests.yml)
-[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A simple command-line tool to get lunch menus from multiple Stockholm restaurants (Gourmedia, Filmhuset, Karavan).
@@ -79,7 +79,7 @@ or
 python3 --version
 ```
 
-If the version is **3.8+**, you can skip to **step 2** or **step 3**, depending on your preferred way of running python apps.
+If the version is **3.10+**, you can skip to **step 2** or **step 3**, depending on your preferred way of running python apps.
 
 ---
 
@@ -200,7 +200,7 @@ This installs the `lunch` command globally on your system.
 
 **Requirements:**
 
-- Python 3.8 or higher
+- Python 3.10 or higher
 
 ### 🍽️ 4. Usage
 

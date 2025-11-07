@@ -29,6 +29,54 @@ FIXTURES_DIR = Path(__file__).parent / "fixtures"
 DEFAULT_FIXTURE_DATE = date(2025, 11, 7)
 
 
+def get_available_fixture_dates() -> list[date]:
+    """
+    Discover all available fixture dates by scanning the fixtures directory.
+
+    Returns:
+        List of date objects for all available fixture directories, sorted chronologically.
+
+    Example:
+        dates = get_available_fixture_dates()
+        # Returns: [date(2025, 1, 6), date(2025, 11, 7)]
+    """
+    dates = []
+    for date_dir in FIXTURES_DIR.iterdir():
+        if date_dir.is_dir() and date_dir.name.count('_') == 2:
+            try:
+                # Parse date from directory name format: YYYY_MM_DD
+                year, month, day = date_dir.name.split('_')
+                dates.append(date(int(year), int(month), int(day)))
+            except (ValueError, TypeError):
+                # Skip directories that don't match the expected format
+                continue
+    return sorted(dates)
+
+
+def get_fixture_dates_with_file(filename: str) -> list[date]:
+    """
+    Find all fixture dates that have a specific file.
+
+    Args:
+        filename: The fixture filename to look for (e.g., "kvartersmenyn_filmhuset.html")
+
+    Returns:
+        List of date objects for fixture directories containing the file.
+
+    Example:
+        dates = get_fixture_dates_with_file("kvartersmenyn_filmhuset.html")
+        # Returns only dates that have this file
+    """
+    dates = []
+    for test_date in get_available_fixture_dates():
+        date_str = test_date.strftime("%Y_%m_%d")
+        date_dir = FIXTURES_DIR / date_str
+        fixture_file = date_dir / filename
+        if fixture_file.exists():
+            dates.append(test_date)
+    return dates
+
+
 # ============================================================================
 # Helper Functions
 # ============================================================================
