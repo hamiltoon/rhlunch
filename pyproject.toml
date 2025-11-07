@@ -39,6 +39,14 @@ Homepage = "https://github.com/engdahl/rhlunch"
 Repository = "https://github.com/engdahl/rhlunch"
 Issues = "https://github.com/engdahl/rhlunch/issues"
 
+[project.optional-dependencies]
+test = [
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "pytest-mock>=3.11.1",
+    "responses>=0.23.0",
+]
+
 [project.scripts]
 lunch = "lunchscraper.cli:main"
 rhlunch-mcp = "lunchscraper.mcp_server:main"
@@ -46,3 +54,15 @@ rhlunch-mcp = "lunchscraper.mcp_server:main"
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["lunchscraper*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "--verbose",
+    "--cov=lunchscraper",
+    "--cov-report=term-missing",
+    "--cov-report=html",
+]
