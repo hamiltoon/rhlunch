@@ -3,9 +3,9 @@ name: Weekly Test Data Fetch
 on:
   schedule:
     # Run every Monday at 11:00 UTC (around lunch time in Sweden)
-    - cron: '0 11 * * 1'
+    - cron: "0 11 * * 1"
     # Test run at 09:24 UTC (10:24 CET)
-    - cron: '24 9 * * *'
+    - cron: "50 9 * * *"
   workflow_dispatch: # Allow manual triggering
 
 permissions:
@@ -25,7 +25,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: "3.11"
 
       - name: Install dependencies
         run: |
