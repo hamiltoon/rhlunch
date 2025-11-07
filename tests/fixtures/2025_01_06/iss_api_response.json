@@ -1,0 +1,31 @@
+{
+  "dataItems": [
+    {
+      "data": {
+        "menuSwedish": [
+          {
+            "menu": "Kött:\nKycklingfilé med currysås och ris\nVegetariskt:\nFalafel med hummus och sallad"
+          },
+          {
+            "menu": "Fisk:\nLax med dillsås och potatis\nKött:\nBiff med bearnaisesås"
+          },
+          {
+            "menu": "Vegetariskt:\nHalloumi med rostade grönsaker"
+          },
+          {
+            "menu": "Kött:\nFläskkarré med äppelkompott"
+          },
+          {
+            "menu": "Fisk:\nTorsk med smörås\nVegetariskt:\nVegoburgare med pommes"
+          },
+          {
+            "menu": ""
+          },
+          {
+            "menu": ""
+          }
+        ]
+      }
+    }
+  ]
+}

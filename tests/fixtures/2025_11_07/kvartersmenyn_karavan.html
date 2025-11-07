@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if IE 8]> <html class="no-js" lang="en" ><![endif]-->
+
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<base href="https://karavan.kvartersmenyn.se/" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta property="og:title" content="Restaurang Karavan - Stockholm" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="restaurant" />
+<meta property="og:url" content="http://kvartersmenyn.se" />
+<meta property="og:image" content="http://www.kvartersmenyn.se/assets/img/logo.png" />
+<meta property="og:site_name" content="Kvartersmenyn.se" />
+
+<link rel="preconnect" href="//kvmmap.se">
+
+
+<!-- For IE 9 and below. ICO should be 32x32 pixels in size https-->
+<!--[if IE]><link rel="shortcut icon" href="https://www.kvmcdn.se/assets/favicon.ico"><![endif]-->
+<!-- IE 10+ "Metro" Tiles - 144x144 pixels in size -->
+<meta name="msapplication-TileColor" content="#FFFFFF">
+<meta name="msapplication-TileImage" content="https://www.kvmcdn.se/assets/tileicon.png">
+<!-- Touch Icons - iOS and Android 2.1+ 152x152 pixels in size. --> 
+<link rel="apple-touch-icon-precomposed" href="https://www.kvmcdn.se/assets/apple-touch-icon-precomposed.png">
+<!-- Firefox, Chrome, Safari, IE 11+ and Opera. 96x96 pixels in size. -->
+<link rel="icon" href="https://www.kvmcdn.se/assets/favicon.png">
+
+
+<title>Restaurang Karavan Stockholm Gärdet Svenskt Restauranger kvartersmenyn.se</title> 
+<style>
+.map_popup .leaflet-popup-content h3 {font-size:20px;font-weight: bold;}
+.map_popup .leaflet-popup-content p {font-size:13px;color:#ffffff;}
+.map_popup .leaflet-popup-content a {color:#ffffff;}
+.map_popup .leaflet-popup-content-wrapper {
+background-color: #191E4F;
+}
+</style>
+
+
+<link rel="stylesheet" type="text/css" href="https://www.kvmcdn.se/assets/css/foundation.css">
+<link rel="stylesheet" type="text/css" href="https://www.kvmcdn.se/assets/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="https://www.kvmcdn.se/assets/fonts/montserrat/Montserrat.css">
+<!-- <link rel="stylesheet" type="text/css" href="https://cloud.typography.com/7657892/796788/css/fonts.css" /> -->
+<link rel="stylesheet" type="text/css" href="https://www.kvmcdn.se/assets/js/vendor/fancybox/jquery.fancybox.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="https://www.kvmcdn.se/assets/css/lightbox.css">
+<link rel="stylesheet" type="text/css" href="https://www.kvmcdn.se/assets/css/ui-smoothness/jquery-ui-1.10.3.custom.min.css" media="screen" />
+
+<link rel="stylesheet" href="https://www.kvmcdn.se/assets/js/vendor/leaflet/leaflet.css" crossorigin=""/>
+<link rel="stylesheet" href="https://www.kvmcdn.se/assets/js/vendor/leaflet/fullscreen/Control.FullScreen.css" />
+<link rel="stylesheet" href="https://www.kvmcdn.se/assets/js/vendor/leaflet/markercluster/MarkerCluster.css" />
+<link rel="stylesheet" href="https://www.kvmcdn.se/assets/css/MarkerCluster.css" />
+<link rel="stylesheet" href="https://www.kvmcdn.se/assets/js/vendor/leaflet/locatecontrol/L.Control.Locate.min.css" />
+
+<script data-cfasync="false" type="text/javascript">
+var base_url = 'https://karavan.kvartersmenyn.se/';
+var base_domain = 'kvartersmenyn.se';
+var base_assets = 'https://www.kvmcdn.se/assets/';
+var base_counter = 'https://karavan.kvartersmenyn.se/n_start/counter/';
+
+var mapStartLatLng = [59.3392960000, 18.1023790000]; 
+
+document.domain = base_domain;
+favourites_arr = [];
+
+function callAjax(url) {
+var xmlhttp;
+xmlhttp = new XMLHttpRequest();
+xmlhttp.open("POST", url, true);
+xmlhttp.send();
+}
+function kvm_cr(t, r) {
+if (typeof (Storage) !== "undefined") {
+var old_time = localStorage.getItem("c_" + t + "_" + r);
+var timestamp = Date.now() / 1000 | 0;
+if (old_time === null || old_time < timestamp) {
+callAjax(base_counter + t + "/" + r);
+try {
+localStorage.setItem("c_" + t + "_" + r, timestamp + 3600);
+} catch (e) {
+}
+}
+
+}
+}
+kvm_cr('res4', 'HP74Ml_UL0wT42qWzw1eWA..');
+</script>
+
+<script type="text/javascript" src="https://www.kvmcdn.se/assets/js/vendor/lazysizes.min.js" async=""></script>
+<script type="text/javascript" src="https://www.kvmcdn.se/assets/js/vendor/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="https://www.kvmcdn.se/assets/js/vendor/jquery-ui.min.js"></script>
+<script type="text/javascript" src="https://www.kvmcdn.se/assets/js/vendor/jQueryRotate.js"></script>
+<script type="text/javascript" src="https://www.kvmcdn.se/assets/js/vendor/jquery.shorten.js"></script>
+<script type="text/javascript" src="https://www.kvmcdn.se/assets/js/libs/jquery.cookie.js"></script>
+<script type="text/javascript" src="https://www.kvmcdn.se/assets/js/vendor/jquery.lightbox.min.js"></script>
+
+<script type="text/javascript" src="https://www.kvmcdn.se/assets/js/vendor/fancybox/jquery.fancybox.pack.js"></script>
+
+<script type="text/javascript" src="https://www.kvmcdn.se/assets/js/vendor/custom.modernizr.js"></script>
+<!-- <script data-cfasync="false" type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;libraries=geometry&amp;key=AIzaSyD8zc74y23hBJmC58QdfK6yJssaCCGVVNs"></script> -->
+<script type="text/javascript" src="https://www.kvmcdn.se/assets/js/vendor/leaflet/leaflet.js" crossorigin=""></script>
+<script type="text/javascript" src="https://www.kvmcdn.se/assets/js/vendor/leaflet/fullscreen/Control.FullScreen.js"></script>
+<script type="text/javascript" src="https://www.kvmcdn.se/assets/js/vendor/leaflet/markercluster/leaflet.markercluster.js"></script>
+<script type="text/javascript" src="https://www.kvmcdn.se/assets/js/vendor/leaflet/locatecontrol/L.Control.Locate.min.js" charset="utf-8"></script>
+<script type="text/javascript" src="https://www.kvmcdn.se/assets/js/openstreetmap_embed.js"></script>
+<script type="text/javascript" src="https://www.kvmcdn.se/assets/js/script.js?d20150923"></script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JW5LXE5154"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+
+gtag('config', 'G-JW5LXE5154');
+</script>
+<meta name="google-site-verification" content="9cIZFVhpDJpEhSD8uP_Ab4qQLg5EaRB25_c4Xx98vSo" />
+</head>
+<body>
+
+<div class="row">
+<div class="large-6 columns" id="logo">
+<a href="//www.kvartersmenyn.se"><img src="https://www.kvmcdn.se/assets/img/logo.png" alt="Kvartersmenyn" width="423" height="80" /></a>
+</div>
+<div class="large-5 columns" style="float: right;">
+<a style="float:right; color: #3a338a; font-size: 11px; margin-top: 20px" 
+class="link" 
+href="https://www.kvartersmenyn.se/index.php/login" 
+data-reveal-id="login">
+<b>LOGGA IN SOM KR&Ouml;GARE</b>
+</a>
+
+<div style="margin-top: 40px;">	
+<form action="https://www.kvartersmenyn.se/index.php/" method="post" accept-charset="utf-8" id="searchbox"><input style="float:left; width: 340px; height: 45px;" 
+type="text" 
+placeholder="Skriv in restaurangnamn eller ort" 
+name="find" 
+id="autocompleteall" 
+class="ui-widget" />
+<input type="submit" class="small button" style="float: right; height: 45px; width: auto; padding-top: 12px; font-size: 16px;text-transform: uppercase;" value="Hitta &gt;" />
+<input name="s" value="_" hidden="hidden" />
+</form></div>
+
+</div>
+</div>
+
+
+	
+
+
+	
+
+<div class="row">
+<div class="large-12 columns">
+<nav class="top-bar">
+<section class="top-bar-section">
+
+<ul class="left">
+<li><a href="https://www.kvartersmenyn.se/" style="">Start</a></li><li><a href="https://www.kvartersmenyn.se/takeaway/" style="background-color:#FABF1A !important;color:#191E4F !important;">Takeaway</a></li><li><a href="https://www.kvartersmenyn.se/delivery/" style="background-color:#FDE5A3 !important;color:#191E4F !important;">Utkörning</a></li><li><a href="https://www.kvartersmenyn.se/catering/" style="">Catering</a></li><li><a href="https://www.kvartersmenyn.se/conference/" style="">Konferens & Festvåning</a></li><li><a href="https://www.kvartersmenyn.se/book_table/" style="">Boka bord</a></li><li><a href="https://www.kvartersmenyn.se/index.php/article/help" style="">Hjälp</a></li></ul>
+
+	
+
+<ul class="left">
+<li><a href="index.php/julbord/">Julbord</a></li>
+</ul>
+
+<ul class="right">
+<li><a href="https://www.kvartersmenyn.se/index.php/fav" style=""><i class="fa fa-star" style="color:#DAAFC5;"></i> Favoriter <span class="favourite-count"></span></a></li></ul>
+</section>				
+</nav>
+</div>
+</div>
+
+
+<div class="row">
+<div class="large-8 column">
+<ul itemscope itemtype="http://schema.org/BreadcrumbList" class="breadcrumbs">
+<li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+<a href="https://www.kvartersmenyn.se/index.php/" itemscope itemtype="http://schema.org/Thing" itemprop="item"><span itemprop="name">START</span></a><meta itemprop="position" content="1" />
+</li>
+<li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+<a href="https://www.kvartersmenyn.se/index.php/stockholm" itemscope itemtype="http://schema.org/Thing" itemprop="item"><span itemprop="name">Stockholm</span></a><meta itemprop="position" content="2" />
+</li>
+<li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+<a href="https://www.kvartersmenyn.se/index.php/stockholm/area/gardet_428" itemscope itemtype="http://schema.org/Thing" itemprop="item"><span itemprop="name">Gärdet</span></a><meta itemprop="position" content="3" />
+</li>
+<li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+<a href="https://www.kvartersmenyn.se/index.php/stockholm/area/gardet_428/keyword/svenskt_3178" itemscope itemtype="http://schema.org/Thing" itemprop="item"><span itemprop="name">Svenskt</span></a><meta itemprop="position" content="4" />
+</li>
+<li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+<a href="https://www.kvartersmenyn.se/index.php/rest/16858" itemscope itemtype="http://schema.org/Thing" itemprop="item"><span itemprop="name">Restaurang Karavan</span></a><meta itemprop="position" content="5" />
+</li>
+</ul>
+</div>
+<div class="large-4 column" style="float: right;">
+<p style="font-size: 12px; float: right; color: #10a19a;">
+<b><a href="https://www.kvartersmenyn.se/index.php/stockholm/area/gardet_428/keyword/svenskt_3178" style="color: #10a19a;" class="link"> &lt; TILLBAKA</a></b>
+</p>
+</div>
+</div>
+
+
+
+
+
+<!-- Main Page Content and Sidebar -->
+<style>
+    .orbit-bullets { display: none; }
+
+    .orbit-container .orbit-prev,
+    .orbit-container .orbit-next {
+        display: block;
+    }
+</style>
+<div class="row" itemscope itemtype="http://schema.org/Restaurant">
+
+    <!-- Navigation Box Lunch Start -->
+
+    <div class="large-8 columns" role="content">
+        <div class="panel" style="height:120px;margin-bottom:0;padding:0;">
+            <!-- Logo -->
+            <div style="position: absolute; right: 0; top: 0; z-index: 2; height: 120px; line-height: 120px;">
+                
+                                    <img itemprop="image" src="https://www.kvmcdn.se/images/logos_small/16858.jpg" style="padding-right:30px;vertical-align:middle;" alt="" />
+                            </div>
+
+            <div class="name" style="left:2em;height:65px;">
+                <h5 itemprop="name" style="margin-top: -3px;">Restaurang Karavan</h5>
+                <p><span itemprop="servesCuisine">Svenskt</span></p>
+            </div>
+
+            <div class="divider" style="height:55px;left:0;top:65px;">
+
+                <div class="name" style="left:20px;font-size: 12px; font-weight: bold; width: 70%; white-space: no-wrap;">
+                    <a href="https://www.kvartersmenyn.se/index.php/rest/16858/4" itemprop="menu">Lunchmeny</a>                </div>
+            </div>
+        </div>
+        <div class="slideshow-wrapper">
+            <ul id="featured1" data-orbit>
+                                                            
+
+                        <a href="https://www.kvmcdn.se/files/img/2/265112-86023CC2-3BC2-4512-AE5E-BF335D913262_org.jpeg" data-lightbox="rest-images" data-title="Restaurang Karavan - 86023CC2-3BC2-4512-AE5E-BF335D913262.jpeg">
+                            <li><img itemprop="image" src="https://www.kvmcdn.se/files/img/2/265112-86023CC2-3BC2-4512-AE5E-BF335D913262_big.jpeg" alt="265112-86023CC2-3BC2-4512-AE5E-BF335D913262.jpeg" /></li>
+                        </a>
+
+                                            
+
+                        <a href="https://www.kvmcdn.se/files/img/3/265113-A263FFDA-87AF-4F5A-ACF0-B778C79A8B45_org.jpeg" data-lightbox="rest-images" data-title="Restaurang Karavan - A263FFDA-87AF-4F5A-ACF0-B778C79A8B45.jpeg">
+                            <li><img itemprop="image" src="https://www.kvmcdn.se/files/img/3/265113-A263FFDA-87AF-4F5A-ACF0-B778C79A8B45_big.jpeg" alt="265113-A263FFDA-87AF-4F5A-ACF0-B778C79A8B45.jpeg" /></li>
+                        </a>
+
+                                            
+
+                        <a href="https://www.kvmcdn.se/files/img/4/265114-30A4EA97-1D37-4580-B2BC-B70F8FA16A66_org.jpeg" data-lightbox="rest-images" data-title="Restaurang Karavan - 30A4EA97-1D37-4580-B2BC-B70F8FA16A66.jpeg">
+                            <li><img itemprop="image" src="https://www.kvmcdn.se/files/img/4/265114-30A4EA97-1D37-4580-B2BC-B70F8FA16A66_big.jpeg" alt="265114-30A4EA97-1D37-4580-B2BC-B70F8FA16A66.jpeg" /></li>
+                        </a>
+
+                                            
+
+                        <a href="https://www.kvmcdn.se/files/img/5/265115-A0783A22-DD65-465F-8AAD-577F8D3A3600_org.jpeg" data-lightbox="rest-images" data-title="Restaurang Karavan - A0783A22-DD65-465F-8AAD-577F8D3A3600.jpeg">
+                            <li><img itemprop="image" src="https://www.kvmcdn.se/files/img/5/265115-A0783A22-DD65-465F-8AAD-577F8D3A3600_big.jpeg" alt="265115-A0783A22-DD65-465F-8AAD-577F8D3A3600.jpeg" /></li>
+                        </a>
+
+                                            
+
+                        <a href="https://www.kvmcdn.se/files/img/6/265116-14D1C138-90D2-417A-887C-DAC4AC50AAF2_org.jpeg" data-lightbox="rest-images" data-title="Restaurang Karavan - 14D1C138-90D2-417A-887C-DAC4AC50AAF2.jpeg">
+                            <li><img itemprop="image" src="https://www.kvmcdn.se/files/img/6/265116-14D1C138-90D2-417A-887C-DAC4AC50AAF2_big.jpeg" alt="265116-14D1C138-90D2-417A-887C-DAC4AC50AAF2.jpeg" /></li>
+                        </a>
+
+                                            
+
+                        <a href="https://www.kvmcdn.se/files/img/7/265117-C6650041-01A5-4850-8061-2A66A44B5433_org.jpeg" data-lightbox="rest-images" data-title="Restaurang Karavan - C6650041-01A5-4850-8061-2A66A44B5433.jpeg">
+                            <li><img itemprop="image" src="https://www.kvmcdn.se/files/img/7/265117-C6650041-01A5-4850-8061-2A66A44B5433_big.jpeg" alt="265117-C6650041-01A5-4850-8061-2A66A44B5433.jpeg" /></li>
+                        </a>
+
+                                            
+
+                        <a href="https://www.kvmcdn.se/files/img/8/265118-B662A812-2D81-48F3-86FF-0599476C26D8_org.jpeg" data-lightbox="rest-images" data-title="Restaurang Karavan - B662A812-2D81-48F3-86FF-0599476C26D8.jpeg">
+                            <li><img itemprop="image" src="https://www.kvmcdn.se/files/img/8/265118-B662A812-2D81-48F3-86FF-0599476C26D8_big.jpeg" alt="265118-B662A812-2D81-48F3-86FF-0599476C26D8.jpeg" /></li>
+                        </a>
+
+                                            
+
+                        <a href="https://www.kvmcdn.se/files/img/9/265119-C588D436-6A28-45C4-8963-3614D0158C64_org.jpeg" data-lightbox="rest-images" data-title="Restaurang Karavan - C588D436-6A28-45C4-8963-3614D0158C64.jpeg">
+                            <li><img itemprop="image" src="https://www.kvmcdn.se/files/img/9/265119-C588D436-6A28-45C4-8963-3614D0158C64_big.jpeg" alt="265119-C588D436-6A28-45C4-8963-3614D0158C64.jpeg" /></li>
+                        </a>
+
+                                            
+
+                        <a href="https://www.kvmcdn.se/files/img/10/265120-9E53C9A5-4A28-4118-8753-FA12887F132B_org.jpeg" data-lightbox="rest-images" data-title="Restaurang Karavan - 9E53C9A5-4A28-4118-8753-FA12887F132B.jpeg">
+                            <li><img itemprop="image" src="https://www.kvmcdn.se/files/img/10/265120-9E53C9A5-4A28-4118-8753-FA12887F132B_big.jpeg" alt="265120-9E53C9A5-4A28-4118-8753-FA12887F132B.jpeg" /></li>
+                        </a>
+
+                                            
+
+                        <a href="https://www.kvmcdn.se/files/img/11/265121-58E38E42-96CC-4A25-ABD6-68830156D4A4_org.jpeg" data-lightbox="rest-images" data-title="Restaurang Karavan - 58E38E42-96CC-4A25-ABD6-68830156D4A4.jpeg">
+                            <li><img itemprop="image" src="https://www.kvmcdn.se/files/img/11/265121-58E38E42-96CC-4A25-ABD6-68830156D4A4_big.jpeg" alt="265121-58E38E42-96CC-4A25-ABD6-68830156D4A4.jpeg" /></li>
+                        </a>
+
+                                            
+
+                        <a href="https://www.kvmcdn.se/files/img/12/265122-EB26248E-9F9D-4CCE-84E0-F4DC443F2622_org.jpeg" data-lightbox="rest-images" data-title="Restaurang Karavan - EB26248E-9F9D-4CCE-84E0-F4DC443F2622.jpeg">
+                            <li><img itemprop="image" src="https://www.kvmcdn.se/files/img/12/265122-EB26248E-9F9D-4CCE-84E0-F4DC443F2622_big.jpeg" alt="265122-EB26248E-9F9D-4CCE-84E0-F4DC443F2622.jpeg" /></li>
+                        </a>
+
+                    
+                            </ul>
+        </div>
+
+                <div id="restaurangbeskrivning" class="panel" style="padding-left: 30px; padding-right: 30px; min-height: 40px; max-height: auto;">
+        </div>
+
+        <!-- Book takeaway online -->
+        
+        
+        <!-- Show the menu -->
+
+        <div class="divider-full" style="top: 5px; left: 0px; padding-left: 30px; padding-right: 30px; margin-bottom: 40px; margin-top:-25px;">
+
+            <h5 style="color: #191e4f;">
+                Lunchmeny            </h5>
+
+                            <p style="font-size: 10px; margin-top: -15px; color: #191E4F;">10:30 - 13:30</p>
+                <p style="font-size: 11px; margin-top: -15px; color: #191E4F;">Pris 137:-</p>
+                <p style="font-size: 11px; color: #191E4F;"><b>VECKA 45, 2025</b></p>
+            
+            <div class="day" style="margin-bottom: 0px;">
+                                    <div class="meny" style="clear:left;line-height:1.6em;padding-bottom:2em;"><b>Måndag</b><br>C Vego chili med bönor serveras med gräddfil och nachos<br>B Pankostekt fisk med tonfisk och purjolökskräm samt&nbsp; &nbsp;rostad potatis<br>C Helstekt fläskkarré serveras med trattkantarellsås och rostad potatis<br><br><b>Tisdag</b><br>A Långbakad rotselleri serveras med sojamajo och rostad&nbsp; &nbsp;potatis toppad med friterad puriolök<i style="opacity: 0.1;color: #eee;">pogre</i><br>C Fisk ala bombay serveras basmatiris<i style="opacity: 0.1;color: #eee;">bde</i><br>D Raggmunk med stekt fläsk och lingon<i style="opacity: 0.1;color: #eee;">cf</i><br><br><b>Onsdag</b><br>B Zucchini piccata med gräddig tomatsås serverad med ris<i style="opacity: 0.1;color: #eee;">a</i><br>C Kyckling i het röd curry med lime, citrongräs och kokosgrädde<i style="opacity: 0.1;color: #eee;">df</i><br>D Stekt fiskfilé serveras med romröra serveras med dillkokt potatis<br><br><b>Torsdag</b><br />B Gnocchi med vitlöksstekt svamp serveras med tomat och&nbsp; &nbsp;basilikasås<br />E Wallenbergare med gräddsky, lingon, potatismos<br />C Ärtsoppa med pannkaka med sylt grädde och massa&nbsp; &nbsp;godsaker (buffé)<br /><br /><b>Fredag</b><br />E Karavans hamburgerbuffé med massa tillbehör och till dessert blir det chokladpudding<br /><br /><b>Klimato</b><br />CO2e-data för Sverige tillhandahålls av Klimato-databasen.<br />Märkningarna visar CO2e-utsläppen av en serverad måltid med ett betyg (A-E) som återspeglar dess relativa klimatpåverkan.<br />A = Mycket låg<br />B = Låg<br />C = Medium<br />D = Hög<br />E = Mycket hög<br></div>
+                                                    <div class="meny" style="clear:left;line-height:1.6em;padding-top:2em;border-top:1px solid #191e4f"><b>PRIS: 137:-</b><br />Inkl. smör, bröd, kaffe, salladsbuffé, te, kaka, måltidsdryck<br />Lojalitetskort 127:-<br />Studentpris 130:-Soppa complete 105:-Soppa med bröd 90:-Soppa take away med sallad &amp; bröd 120:-Matlåda 13.30-13.45 80:-<br /><b>Öppet:</b> <b>Mån-Fre</b> 10:30-13:30</div>
+                            </div>
+
+        </div>
+    </div>
+
+    <!-- End Menu List -->
+
+
+    <!-- End Main Content -->
+
+
+    <!-- Sidebar Start -->
+
+    <aside class="large-4 columns">
+        <div class="panel" style="height: auto;">
+            <h6 style="text-transform: uppercase;">Alternativ</h6>
+            <div>
+                
+                <ul class="button-list" style="float: right; list-style: none; margin-top: -25px;">
+                    <li><i class="fa fa-envelope" style="color:#50758E;"></i>
+                        <a href="https://www.kvartersmenyn.se/index.php/subscribe/16858" 
+                           class="small button subscribe fancybox fancybox.iframe" 
+                           style="min-width: 140px; min-height: 32px; font-size: 12px;"
+                           >
+                               PRENUMERERA                        </a>
+                    </li>
+                    <li class="togglefav" data-restid="16858" data-idc="HP74Ml_UL0wT42qWzw1eWA..">
+                        <i class="fa fa-star" style="color:#50758E;"></i>
+                        <a href="#" class="small button favourite" style="min-width: 140px; min-height: 32px; font-size: 12px;">
+                            <span class="show fav16858-add">+</span>
+                            <span class="hide fav16858-del">-</span>
+                            FAVORIT                        </a>
+                    </li>
+                                            <li><i class="fa fa-clock-o" style="color:#50758E;"></i>
+                            <a href="https://www.kvartersmenyn.se/index.php/book/16858" 
+                               class="small button bokning fancybox fancybox.iframe" 
+                               style="min-width: 140px; min-height: 32px; font-size: 12px; background-color: #fabf1a; border-bottom: solid 4px #d49e07; text-transform: uppercase;"
+                               >
+                                   Bokningsf&ouml;rf.                            </a>
+                        </li>
+                                    </ul>
+
+                                                                                    
+                <br />
+                <a href="https://www.kvartersmenyn.se/index.php/output/menu/16858/menu/P/20251107"
+                   class="fancybox fancybox.iframe" 
+                   style="color:#23194D;"
+                   >
+                    <i class="fa fa-print" style="color:#50758E;" title="Skriv ut"></i> Skriv ut                </a><br />
+                <br />
+                <br />
+                <br />
+
+            </div>
+            <div class="divider-sidebar">
+                <h6 style="text-transform: uppercase;">Öppettider</h6>
+                <br>
+                <br>
+
+                <table class="oppettider">
+                    <tr><td><p>Mån-Fre<br></p></td><td><p>10:30-13:30<br></p></td></tr>                </table>
+            </div>
+            <div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress" style="margin-top: 70px;">
+                <h6 style="text-transform: uppercase;">Adress</h6>
+                <p>
+                    <span itemprop="streetAddress">Valhallavägen 199</span><br />
+                    <span itemprop="addressLocality">Stockholm</span>
+                </p>
+            </div>
+
+                            <div class="divider-sidebar">
+                    <h6 style="text-transform: uppercase;">Telefon</h6>
+                    <p itemprop="telephone">0730684093</p>
+                </div>
+            
+            <div class="hitta">
+                <h6 style="text-transform: uppercase;">Se karta!</h6>
+
+                                <div class="panel" id="map_canvas" style="height: 250px; text-align: center; padding:0 !important;">
+                </div>
+
+                <!-- <div id="map_canvas" style="width: 340px; height: 250px; text-align: center;">
+                </div> -->
+                <br>
+                <p style="display:none;">F&aring; v&auml;gbeskrivning</p>
+            </div>
+
+                            <div class="divider-sidebar" style="top: -40px; margin-bottom: -20px;">
+                    <h6 style="text-transform: uppercase;">Hemsida</h6>
+                    <p>
+                        <a href="http://www.restaurangkaravan.se" style="color: #191e4f;">www.restaurangkaravan.se</a>                    </p>
+                </div>
+            
+
+            
+                    </div>
+
+
+    </aside>
+
+    <!-- End Sidebar -->
+
+</div>
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Organization",
+  "url": "https://karavan.kvartersmenyn.se",
+  "logo": "https://www.kvmcdn.se/images/logos_small/16858.jpg"
+}
+</script>
+
+<!-- End Main Content and Sidebar -->
+
+
+
+
+<div class="footer-wrapper">
+<div id="footer">
+<div class="row">
+<div class="large-3 columns">
+<div style="text-align: center;">
+<ul style="list-style-type: none;">
+<li class="active"><b>START</b></li><li><a href="https://www.kvartersmenyn.se/index.php/article/aboutus" style="">Om oss</a></li><li><a href="https://www.kvartersmenyn.se/index.php/article/press" style="">Press</a></li><li><a href="https://www.kvartersmenyn.se/index.php/article/web_gdpr" style="">Integritetsskyddspolicy</a></li><li><a href="https://www.kvartersmenyn.se/index.php/article/web_hotlink" style="">Hotlinking</a></li></ul>
+</div>
+</div>
+
+<div class="large-3 columns">
+<div style="text-align: center;">
+<ul style="list-style-type: none;">
+<li class="active"><b>SUPPORT</b></li><li><a href="https://www.kvartersmenyn.se/index.php/article/faq" style="">Frågor & svar</a></li><li><a href="https://www.kvartersmenyn.se/index.php/article/contact" style="">Kontakta oss</a></li><li><a href="https://www.kvartersmenyn.se/index.php/article/newuser" style="">Skapa Profil</a></li></ul>
+</div>
+</div>
+
+<div class="large-3 columns">
+<div style="text-align: center;">
+<ul style="list-style-type: none; color: #fff;">
+<li class="active"><b>KRÖGARE</b></li><li><a href="https://www.kvartersmenyn.se/index.php/new_rest" style="">Anslut din restaurang</a></li><li><a href="http://www.kvartersmenynplus.se" target="_blank" style="">Kvartersmenyn+</a></li><li><a href="https://www.kvartersmenyn.se/allmannavillkor/" style="">Allmänna villkor</a></li></ul>
+</div>
+</div>
+
+<div class="large-3 columns">
+<div style="text-align: center;">
+<ul style="list-style-type: none;">
+<li class="active"><b>FÖLJ OSS</b></li><li><a href="https://sv-se.facebook.com/kvartersmenyn" target="_blank" style="">Facebook</a></li><li><a href="https://www.instagram.com/kvartersmenyn/" target="_blank" style="">Instagram</a></li></ul>
+</div>
+</div>
+</div>
+
+
+<div class="row" >
+<div align="center" style="text-align:center; line-height: 150%; font-size: 12px;"> <br /><a href="https://www.kvartersmenyn.se/index.php/stockholm">Stockholm</a> | <a href="https://www.kvartersmenyn.se/index.php/goteborg">Göteborg</a> | <a href="https://www.kvartersmenyn.se/index.php/arboga">Arboga</a> | <a href="https://www.kvartersmenyn.se/index.php/enkoping">Enköping</a> | <a href="https://www.kvartersmenyn.se/index.php/eskilstuna">Eskilstuna</a> | <a href="https://www.kvartersmenyn.se/index.php/falun">Falun</a> | <a href="https://www.kvartersmenyn.se/index.php/gavle">Gävle</a> | <a href="https://www.kvartersmenyn.se/index.php/helsingborg">Helsingborg</a> | <a href="https://www.kvartersmenyn.se/index.php/jonkoping">Jönköping</a> | <a href="https://www.kvartersmenyn.se/index.php/karlstad">Karlstad</a> | <a href="https://www.kvartersmenyn.se/index.php/kil">Kil</a> | <a href="https://www.kvartersmenyn.se/index.php/kumla">Kumla</a> | <a href="https://www.kvartersmenyn.se/index.php/kungsbacka">Kungsbacka</a> | <a href="https://www.kvartersmenyn.se/index.php/kungalv">Kungälv</a> | <a href="https://www.kvartersmenyn.se/index.php/linkoping">Linköping</a> | <a href="https://www.kvartersmenyn.se/index.php/norrkoping">Norrköping</a> | <a href="https://www.kvartersmenyn.se/index.php/skovde">Skövde</a> | <a href="https://www.kvartersmenyn.se/index.php/sodertalje">Södertälje</a> | <a href="https://www.kvartersmenyn.se/index.php/trollhattan">Trollhättan</a> | <a href="https://www.kvartersmenyn.se/index.php/uddevalla">Uddevalla</a> | <a href="https://www.kvartersmenyn.se/index.php/uppsala">Uppsala</a> | <a href="https://www.kvartersmenyn.se/index.php/varberg">Varberg</a> | <a href="https://www.kvartersmenyn.se/index.php/varnamo">Värnamo</a> | <a href="https://www.kvartersmenyn.se/index.php/orebro">Örebro</a> </div>    <br />
+</div>
+</div>
+</div>
+ 
+
+<div>
+<div class="row">
+<div class="large-12 columns" style="text-align: right;">
+<p><small>&copy; 1998 - 2025 Copyright Kvartersmenyn. Allt material på hemsidan är skyddat enligt upphovsrättslagen.</small></p>
+</div>
+</div>
+</div>
+
+ 	  	
+
+
+<script type="text/javascript" src="https://www.kvmcdn.se/assets/js/foundation/foundation.js"></script>  
+<script type="text/javascript" src="https://www.kvmcdn.se/assets/js/foundation/foundation.topbar.js"></script>
+<script type="text/javascript" src="https://www.kvmcdn.se/assets/js/foundation/foundation.dropdown.js"></script>
+<script type="text/javascript" src="https://www.kvmcdn.se/assets/js/foundation/foundation.orbit.js"></script>
+
+<script type="text/javascript">
+$(document).foundation();
+</script>
+
+
+<!-- <script type="text/javascript" src="https://www.kvmcdn.se/assets/js/libs/infobox_packed.js"></script> -->
+
+
+<script type="text/javascript">
+
+$(document).ready(function () {
+
+initmap();
+
+// Front hider
+var value = 0;
+$("#trigger").click(function (event) {
+event.preventDefault();
+$("#showorhide").slideToggle("slow");
+value += 180;
+$(this).rotate({animateTo: value});
+});
+
+// Hider
+var value = 0;
+$("#showorhidetrigger").click(function (event) {
+event.preventDefault();
+if ($("#showorhidecanvas").is(':visible')) {
+$(this).text('Visa fler alternativ');
+} else {
+$(this).text('Dölj alternativen');
+}
+$("#showorhidecanvas").slideToggle("slow");
+// value += 180;
+// $(this).rotate({animateTo: value});
+});
+
+// Long text hider
+$(".showMore").shorten({
+moreText: '<span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x" style="color:#EB5855;"></i><i class="fa fa-angle-down fa-stack-2x" style="color:#FFFFFF;"></i></span>',
+lessText: '<span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x" style="color:#EB5855;"></i><i class="fa fa-angle-up fa-stack-2x" style="color:#FFFFFF;"></i></span>',
+showChars: 250
+});
+});
+
+function copyHtml(source, dest) {
+var firstDivContent = document.getElementById(source);
+var secondDivContent = document.getElementById(dest);
+secondDivContent.innerHTML = firstDivContent.innerHTML;
+}
+
+function copyRest(restId) {
+copyHtml('resth_' + restId, 'resth');
+copyHtml('restm_' + restId, 'restm');
+var idc = $('#resth_' + restId).data('idc');
+kvm_cr("map2", idc);
+}
+
+</script>
+
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99ab390fbe17990c',t:'MTc2MjUwMTY0OQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

@@ -1,5 +1,9 @@
 # RHLunch
 
+[![Tests](https://github.com/hamiltoon/rhlunch/workflows/Tests/badge.svg)](https://github.com/hamiltoon/rhlunch/actions/workflows/tests.yml)
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 A simple command-line tool to get lunch menus from multiple Stockholm restaurants (Gourmedia, Filmhuset, Karavan).
 
 ## 🥱 Easiest way to run
