@@ -29,8 +29,11 @@ jobs:
 
       - name: Install dependencies
         run: |
+          # Install only requests library needed for the fetch script
+          # cd to /tmp to avoid pip trying to install local package
+          cd /tmp
           python -m pip install --upgrade pip
-          pip install requests
+          python -m pip install "requests>=2.31.0"
 
       - name: Generate branch name
         id: branch
