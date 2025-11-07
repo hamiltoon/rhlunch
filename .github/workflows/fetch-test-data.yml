@@ -39,9 +39,11 @@ jobs:
         id: branch
         run: |
           DATE=$(date +%Y-%m-%d)
-          BRANCH_NAME="test-data-fetch-${DATE}"
+          TIMESTAMP=$(date +%Y%m%d-%H%M%S)
+          BRANCH_NAME="test-data-fetch-${TIMESTAMP}"
           echo "branch_name=${BRANCH_NAME}" >> $GITHUB_OUTPUT
           echo "date=${DATE}" >> $GITHUB_OUTPUT
+          echo "timestamp=${TIMESTAMP}" >> $GITHUB_OUTPUT
 
       - name: Create and checkout new branch
         run: |
