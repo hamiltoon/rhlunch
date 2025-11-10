@@ -4,6 +4,8 @@ on:
   schedule:
     # Run every Monday at 11:00 UTC (around lunch time in Sweden)
     - cron: "0 11 * * 1"
+    # Test run at 09:24 UTC (10:24 CET)
+    - cron: "30 9 * * *"
   workflow_dispatch: # Allow manual triggering
 
 permissions:
@@ -27,21 +29,16 @@ jobs:
 
       - name: Install dependencies
         run: |
-          # Install only requests library needed for the fetch script
-          # cd to /tmp to avoid pip trying to install local package
-          cd /tmp
           python -m pip install --upgrade pip
-          python -m pip install "requests>=2.31.0"
+          pip install requests
 
       - name: Generate branch name
         id: branch
         run: |
           DATE=$(date +%Y-%m-%d)
-          TIMESTAMP=$(date +%Y%m%d-%H%M%S)
-          BRANCH_NAME="test-data-fetch-${TIMESTAMP}"
+          BRANCH_NAME="test-data-fetch-${DATE}"
           echo "branch_name=${BRANCH_NAME}" >> $GITHUB_OUTPUT
           echo "date=${DATE}" >> $GITHUB_OUTPUT
-          echo "timestamp=${TIMESTAMP}" >> $GITHUB_OUTPUT
 
       - name: Create and checkout new branch
         run: |

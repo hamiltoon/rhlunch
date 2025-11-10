@@ -93,11 +93,14 @@ class TestClassifyDish:
         assert DishClassifier.classify_dish("Vegetariskt: Halloumi") == 'marker:vegetarian'
 
     def test_classify_with_previous_category(self):
-        """Test that previous_category parameter overrides keyword matching."""
-        # If previous line was a fish marker, classify as fish even if it has no fish keywords
+        """Test that previous_category is used as fallback after keyword matching."""
+        # If previous line was a fish marker, classify as fish ONLY if no explicit keywords
         assert DishClassifier.classify_dish("Stekt med potatis", previous_category='fish') == 'fish'
         assert DishClassifier.classify_dish("Dagens rätt", previous_category='vegetarian') == 'vegetarian'
-        assert DishClassifier.classify_dish("Grillad med grönsaker", previous_category='meat') == 'meat'
+
+        # Keywords override previous_category (this is intentional to fix Gourmedia Thursday bug)
+        # "grönsaker" is a vegetarian keyword, so it overrides previous_category='meat'
+        assert DishClassifier.classify_dish("Grillad med grönsaker", previous_category='meat') == 'vegetarian'
 
     def test_classify_empty_and_short_strings(self):
         """Test handling of edge cases."""
@@ -117,12 +120,15 @@ class TestClassifyDish:
         # When both fish and meat keywords appear, meat should win (checked first)
         assert DishClassifier.classify_dish("Fläskfilé med fiskräk") == 'meat'
 
-        # When both vegetarian and meat keywords appear, meat wins (checked first)
-        # "köttbullar" is in MEAT_KEYWORDS, so it matches before checking vegetarian
-        assert DishClassifier.classify_dish("Vego köttbullar") == 'meat'
+        # Explicit vegan/vegetarian markers now have HIGHEST priority (fixes Ärtsoppa/Vegan bug)
+        # "Vego" is an explicit vegetarian marker that overrides "köttbullar" meat keyword
+        assert DishClassifier.classify_dish("Vego köttbullar") == 'vegetarian'
 
         # Pure vegetarian dishes without meat keywords work fine
         assert DishClassifier.classify_dish("Vego burgare") == 'vegetarian'
+
+        # Without explicit veg marker, meat keywords win
+        assert DishClassifier.classify_dish("Köttbullar") == 'meat'
 
     def test_case_insensitivity(self):
         """Test that classification is case-insensitive."""
