@@ -28,7 +28,7 @@ class DishClassifier:
     FISH_KEYWORDS = [
         'fisk', 'lax', 'torsk', 'sej', 'räkor', 'scampi', 'hummer', 'skaldjur',
         'tonfisk', 'sill', 'strömming', 'gös', 'abborre', 'sardiner', 'makrill',
-        'hälleflundra', 'rödspätta', 'piggvar', 'havskräfta'
+        'hälleflundra', 'rödspätta', 'piggvar', 'havskräfta', 'kummel', 'fish'
     ]
 
     MEAT_KEYWORDS = [
@@ -43,16 +43,21 @@ class DishClassifier:
     VEGETARIAN_KEYWORDS = [
         'vego', 'vegan', 'vegetarisk', 'halloumi', 'falafel', 'tempeh',
         'tofu', 'vegansk', 'vegetariskt', 'bönor', 'linser', 'quinoa',
-        'seitan', 'svampgryta', 'svampsås', 'rotselleri', 'selleri',
+        'seitan', 'svampgryta', 'svampsås', 'svampsoppa', 'rotselleri', 'selleri',
         'kikärtor', 'grönsaker', 'vegoburgare', 'vegoköttbullar', 'chili med bönor',
         'böff ala lindström', 'gnocchi', 'zucchini', 'aubergine', 'moussaka på vegofärs',
-        'långbakad rotselleri'
+        'långbakad rotselleri', 'skogssvamp', 'tempura svamp'
     ]
 
     # Special Swedish dishes that should be classified as meat
     MEAT_DISHES = [
         'ärtsoppa',  # Usually served with pork
         'pannkaka'   # Context-dependent but traditionally with pork soup
+    ]
+
+    # Labels/headers to skip (not actual dishes)
+    SKIP_LABELS = [
+        'extra', 'övrig', 'övrigt', 'dessert', 'tillbehör'
     ]
 
     @classmethod
@@ -80,11 +85,18 @@ class DishClassifier:
                 if dish_lower.startswith(marker + ':'):
                     return f'marker:{category}'
 
-        # If previous line was a category marker, use that
-        if previous_category:
-            return previous_category
+        # Check for explicit vegan/vegetarian markers first (highest priority)
+        # This catches dishes like "Ärtsoppa/Vegan" even if they contain meat keywords
+        explicit_veg_markers = ['vegan', 'vegansk', 'vegetarisk', 'vegetariskt', 'vego']
+        if any(marker in dish_lower for marker in explicit_veg_markers):
+            return 'vegetarian'
 
-        # Check for meat keywords first to avoid false positives
+        # Check for special meat dishes that should override category markers
+        # (e.g., "Ärtsoppa" after "Vegetariskt:" marker should still be meat)
+        if any(dish_name in dish_lower for dish_name in cls.MEAT_DISHES):
+            return 'meat'
+
+        # Check for meat keywords to avoid false positives
         # (e.g., "fläsk" contains "fisk" as substring, but should be classified as meat)
         if any(keyword in dish_lower for keyword in cls.MEAT_KEYWORDS):
             return 'meat'
@@ -97,9 +109,10 @@ class DishClassifier:
         if any(keyword in dish_lower for keyword in cls.VEGETARIAN_KEYWORDS):
             return 'vegetarian'
 
-        # Check for special meat dishes
-        if any(dish_name in dish_lower for dish_name in cls.MEAT_DISHES):
-            return 'meat'
+        # If previous line was a category marker, use that as fallback
+        # This comes AFTER keyword checks so that explicit dishes override markers
+        if previous_category:
+            return previous_category
 
         # Default to meat if it looks like a dish (has serveras, med, etc.)
         if any(word in dish_lower for word in ['serveras', ' med ', 'till', 'samt', 'och']):
@@ -130,6 +143,13 @@ class DishClassifier:
         for dish in dishes:
             if not dish or len(dish.strip()) < 3:
                 continue
+
+            # Skip labels/headers
+            dish_lower = dish.lower().strip()
+            if any(label in dish_lower for label in cls.SKIP_LABELS):
+                # Only skip if it's a very short text (likely just the label)
+                if len(dish_lower) < 15:
+                    continue
 
             category = cls.classify_dish(dish, current_marker_category)
 
