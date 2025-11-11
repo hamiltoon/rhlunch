@@ -6,6 +6,7 @@ import pytest
 import responses
 from bs4 import BeautifulSoup
 from lunchscraper.kvartersmenyn_scraper import KvartersmenynsMenuScraper
+from tests.conftest import get_fixture_dates_with_file, load_fixture_file
 
 
 class TestKvartersmenynsMenuScraper:
@@ -354,3 +355,134 @@ class TestKvartersmenynsMenuScraper:
 
         with pytest.raises(Exception, match="Failed to fetch menu"):
             scraper.get_weekly_menu()
+
+
+# ============================================================================
+# Integration Tests with Real Fetched Fixtures
+# ============================================================================
+
+
+class TestKvartersmenynsMenuScraperWithRealFixtures:
+    """
+    Integration tests using real fetched HTML fixtures.
+
+    These tests automatically discover and run against all available fixture dates,
+    ensuring that the scraper works with actual production HTML.
+    """
+
+    @pytest.mark.parametrize(
+        "fixture_date",
+        get_fixture_dates_with_file("kvartersmenyn_filmhuset.html"),
+        ids=lambda d: f"filmhuset_{d.strftime('%Y_%m_%d')}"
+    )
+    def test_parse_real_filmhuset_html(self, fixture_date):
+        """
+        Test parsing real Filmhuset HTML from fetched fixtures.
+
+        This test runs against all available fixture dates automatically.
+        When new fixtures are added, this test will automatically include them.
+        """
+        html = load_fixture_file("kvartersmenyn_filmhuset.html", fixture_date)
+        scraper = KvartersmenynsMenuScraper(
+            restaurant_url="https://filmhuset.kvartersmenyn.se/",
+            restaurant_name="Filmhuset"
+        )
+
+        soup = BeautifulSoup(html, 'html.parser')
+        weekly_menu = scraper._parse_weekly_menu(soup)
+
+        # Basic validation that we got a menu
+        assert isinstance(weekly_menu, dict), f"Failed to parse menu for {fixture_date}"
+        assert len(weekly_menu) > 0, f"No menu items found for {fixture_date}"
+
+        # Check that we have expected weekdays
+        valid_days = {'måndag', 'tisdag', 'onsdag', 'torsdag', 'fredag'}
+        for day in weekly_menu.keys():
+            assert day in valid_days, f"Unexpected day '{day}' in menu for {fixture_date}"
+
+        # Check that each day has the expected structure
+        for day, menu in weekly_menu.items():
+            assert 'vegetarian' in menu, f"Missing 'vegetarian' category for {day} on {fixture_date}"
+            assert 'fish' in menu, f"Missing 'fish' category for {day} on {fixture_date}"
+            assert 'meat' in menu, f"Missing 'meat' category for {day} on {fixture_date}"
+
+            # Check that we have at least some dishes
+            total_dishes = len(menu['vegetarian']) + len(menu['fish']) + len(menu['meat'])
+            assert total_dishes > 0, f"No dishes found for {day} on {fixture_date}"
+
+    @pytest.mark.parametrize(
+        "fixture_date",
+        get_fixture_dates_with_file("kvartersmenyn_karavan.html"),
+        ids=lambda d: f"karavan_{d.strftime('%Y_%m_%d')}"
+    )
+    def test_parse_real_karavan_html(self, fixture_date):
+        """
+        Test parsing real Karavan HTML from fetched fixtures.
+
+        This test runs against all available fixture dates automatically.
+        When new fixtures are added, this test will automatically include them.
+        """
+        html = load_fixture_file("kvartersmenyn_karavan.html", fixture_date)
+        scraper = KvartersmenynsMenuScraper(
+            restaurant_url="https://karavan.kvartersmenyn.se/",
+            restaurant_name="Karavan"
+        )
+
+        soup = BeautifulSoup(html, 'html.parser')
+        weekly_menu = scraper._parse_weekly_menu(soup)
+
+        # Basic validation that we got a menu
+        assert isinstance(weekly_menu, dict), f"Failed to parse menu for {fixture_date}"
+        assert len(weekly_menu) > 0, f"No menu items found for {fixture_date}"
+
+        # Check that we have expected weekdays
+        valid_days = {'måndag', 'tisdag', 'onsdag', 'torsdag', 'fredag'}
+        for day in weekly_menu.keys():
+            assert day in valid_days, f"Unexpected day '{day}' in menu for {fixture_date}"
+
+        # Check that each day has the expected structure
+        for day, menu in weekly_menu.items():
+            assert 'vegetarian' in menu, f"Missing 'vegetarian' category for {day} on {fixture_date}"
+            assert 'fish' in menu, f"Missing 'fish' category for {day} on {fixture_date}"
+            assert 'meat' in menu, f"Missing 'meat' category for {day} on {fixture_date}"
+
+            # Check that we have at least some dishes
+            total_dishes = len(menu['vegetarian']) + len(menu['fish']) + len(menu['meat'])
+            assert total_dishes > 0, f"No dishes found for {day} on {fixture_date}"
+
+    @pytest.mark.parametrize(
+        "restaurant,filename",
+        [
+            ("Filmhuset", "kvartersmenyn_filmhuset.html"),
+            ("Karavan", "kvartersmenyn_karavan.html"),
+        ],
+        ids=["filmhuset", "karavan"]
+    )
+    def test_latest_fixtures_parse_successfully(self, restaurant, filename, kvartersmenyn_filmhuset_html, kvartersmenyn_karavan_html):
+        """
+        Test that the latest fixtures (from conftest.py) parse successfully.
+
+        This test uses the fixtures provided by conftest.py pytest fixtures,
+        ensuring backward compatibility with existing test infrastructure.
+        """
+        # Use the appropriate fixture based on restaurant
+        html = kvartersmenyn_filmhuset_html if restaurant == "Filmhuset" else kvartersmenyn_karavan_html
+
+        scraper = KvartersmenynsMenuScraper(
+            restaurant_url=f"https://{restaurant.lower()}.kvartersmenyn.se/",
+            restaurant_name=restaurant
+        )
+
+        soup = BeautifulSoup(html, 'html.parser')
+        weekly_menu = scraper._parse_weekly_menu(soup)
+
+        # Should successfully parse and return a menu
+        assert isinstance(weekly_menu, dict)
+        assert len(weekly_menu) > 0
+
+        # Verify menu structure
+        for day, menu in weekly_menu.items():
+            assert isinstance(menu, dict)
+            assert 'vegetarian' in menu
+            assert 'fish' in menu
+            assert 'meat' in menu
