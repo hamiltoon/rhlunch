@@ -18,6 +18,7 @@ class TestClassifyDish:
             "Vegoburgare med pommes",
             "Vegansk chili med bönor",
             "Kikärtsgryta med quinoa",
+            "Tortellini med ricotta och spenat, krämig tomatsås och friterad kapris",
         ]
         for dish in vegetarian_dishes:
             assert DishClassifier.classify_dish(dish) == 'vegetarian', f"Failed for: {dish}"

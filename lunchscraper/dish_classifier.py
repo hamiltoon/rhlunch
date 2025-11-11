@@ -46,7 +46,8 @@ class DishClassifier:
         'seitan', 'svampgryta', 'svampsås', 'svampsoppa', 'rotselleri', 'selleri',
         'kikärtor', 'grönsaker', 'vegoburgare', 'vegoköttbullar', 'chili med bönor',
         'böff ala lindström', 'gnocchi', 'zucchini', 'aubergine', 'moussaka på vegofärs',
-        'långbakad rotselleri', 'skogssvamp', 'tempura svamp'
+        'långbakad rotselleri', 'skogssvamp', 'tempura svamp', 'tortellini', 'ricotta',
+        'spenat'
     ]
 
     # Special Swedish dishes that should be classified as meat
