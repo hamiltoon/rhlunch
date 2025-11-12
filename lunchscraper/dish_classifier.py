@@ -88,7 +88,9 @@ class DishClassifier:
 
         # Check for explicit vegan/vegetarian markers first (highest priority)
         # This catches dishes like "Ärtsoppa/Vegan" even if they contain meat keywords
-        explicit_veg_markers = ['vegan', 'vegansk', 'vegetarisk', 'vegetariskt', 'vego']
+        # Also includes strong vegetable indicators to override "biff" in vegetable patties
+        explicit_veg_markers = ['vegan', 'vegansk', 'vegetarisk', 'vegetariskt', 'vego',
+                                'morot', 'morötter']
         if any(marker in dish_lower for marker in explicit_veg_markers):
             return 'vegetarian'
 
